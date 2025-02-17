@@ -13,11 +13,16 @@ import {
 import { ChevronDown } from "lucide-react";
 
 const Header = () => {
-  const [position, setPosition] = useState("bottom");
+  const [position, setPosition] = useState("model");
+  const [modelList, setModelList] = useState<string[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch("http://localhost:11434/api/tags");
-  });
+    // fetch("/api/ollama")
+    //   .then((res) => res.json())
+    //   .then(setModelList)
+    //   .catch((err) => setError(err.message));
+  }, []);
 
   return (
     <header>
@@ -33,9 +38,11 @@ const Header = () => {
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56" align="start">
           <DropdownMenuRadioGroup value={position} onValueChange={setPosition}>
-            <DropdownMenuRadioItem value="top">상단</DropdownMenuRadioItem>
-            <DropdownMenuRadioItem value="bottom">하단</DropdownMenuRadioItem>
-            <DropdownMenuRadioItem value="right">우측</DropdownMenuRadioItem>
+            {modelList.map((model) => (
+              <DropdownMenuRadioItem key={model} value={model}>
+                {model}
+              </DropdownMenuRadioItem>
+            ))}
           </DropdownMenuRadioGroup>
         </DropdownMenuContent>
       </DropdownMenu>

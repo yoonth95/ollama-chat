@@ -4,25 +4,61 @@
 
 @layer base {
   :root {
-    --background: 0 0% 15%;
-    --foreground: 0 0% 100%;
+    --background: 0 0% 98%;
+    --foreground: 0 0% 9%;
 
-    --muted: 0 0% 20%;
-    --muted-foreground: 0 0% 100%;
+    --muted: 0 0% 90%;
+    --muted-foreground: 0 0% 30%;
 
     --border: 0 0% 20%;
-    --input: 0 0% 20%;
+    --input: 0 0% 85%;
 
-    --primary: 0 0% 98%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 98%;
 
-    --secondary: 0 0% 14.9%;
-    --secondary-foreground: 0 0% 100%;
+    --secondary: 0 0% 95%;
+    --secondary-foreground: 0 0% 20%;
 
-    --accent: 0 0% 14.9%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 0 0% 95%;
+    --accent-foreground: 0 0% 20%;
 
-    --ring: 0 0% 83.1%;
+    --ring: 0 0% 50%;
+
+    --sidebar-bg: 0 0% 3.9%;
+    --dropdown-bg: 0 0% 15%;
+    --input-bg: 0 0% 12%;
+    --text-primary: 0 0% 98%;
+    --text-secondary: 0 0% 63.9%;
+    --placeholder: 208 9% 69%;
+  }
+
+  .dark {
+    --background: 0 0% 9%;
+    --foreground: 0 0% 98%;
+
+    --muted: 0 0% 20%;
+    --muted-foreground: 0 0% 80%;
+
+    --border: 0 0% 20%;
+    --input: 0 0% 12%;
+
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 98%;
+
+    --secondary: 0 0% 3.9%;
+    --secondary-foreground: 0 0% 63.9%;
+
+    --accent: 0 0% 15%;
+    --accent-foreground: 0 0% 98%;
+
+    --ring: 0 0% 50%;
+
+    --sidebar-bg: 0, 0%, 5%;
+    --dropdown-bg: 0 0% 15%;
+    --input-bg: 0 0% 12%;
+    --text-primary: 0 0% 98%;
+    --text-secondary: 0 0% 63.9%;
+    --placeholder: 208 9% 69%;
   }
 }
 

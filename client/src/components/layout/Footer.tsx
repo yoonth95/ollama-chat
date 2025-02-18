@@ -1,9 +1,10 @@
 import React from "react";
+import { ThemeToggle } from "@/components/common/ThemeToggle";
 
 const Footer = () => {
   return (
-    <footer className="text-muted-foreground h-12 text-center text-xs">
-      AI는 상상을 할 수 있습니다. 중요한 정보를 확인하세요.
+    <footer className="flex h-12 items-end justify-end text-center text-xs text-muted-foreground">
+      <ThemeToggle />
     </footer>
   );
 };

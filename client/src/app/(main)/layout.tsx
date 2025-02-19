@@ -9,13 +9,13 @@ export default async function MainLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { models } = await getModels();
+  const { data } = await getModels();
 
   return (
     <div className="flex h-screen bg-background">
       <Sidebar />
       <div className="flex flex-1 flex-col p-4">
-        <ModelsProvider models={models}>
+        <ModelsProvider models={data.models}>
           <Header />
           <main className="flex flex-1 flex-col items-center justify-center">{children}</main>
         </ModelsProvider>

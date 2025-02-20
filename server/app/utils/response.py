@@ -1,9 +1,8 @@
 from typing import Any
 
-def create_response(ok: bool, message: str, data: Any = None, status: int = 200):
+def create_response(ok: bool, message: str, data: Any = None):
     return {
         "ok": ok,
         "message": message,
         "data": data,
-        "status": status
     }

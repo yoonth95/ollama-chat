@@ -3,6 +3,7 @@ import logging
 from app.services.ollama import OllamaService
 from app.utils.response import create_response
 from aiohttp import ClientError
+from fastapi.responses import JSONResponse
 
 router = APIRouter()
 
@@ -16,15 +17,15 @@ async def get_models():
     try:
         models = await OllamaService.get_models()
         logger.info(f"✅ 모델 응답 성공: {models}")
-        return create_response(True, "모델 목록 조회 성공", models)
+        return JSONResponse(content=create_response(True, "모델 목록 조회 성공", models), status_code=200)
 
     except ClientError as e:
         logger.error(f"🚨 Ollama 접속 오류: {e}")
-        return create_response(False, "Ollama 서비스가 실행되지 않았습니다. 설치 또는 실행 상태를 확인하세요.", None, 503)
+        return JSONResponse(content=create_response(False, "Ollama 서비스가 실행되지 않았습니다. 설치 또는 실행 상태를 확인하세요.", None), status_code=503)
 
     except Exception as e:
         logger.error(f"🚨 모델 조회 오류: {e}")
-        return create_response(False, "서버 오류", None, 500)
+        return JSONResponse(content=create_response(False, "서버 오류", None), status_code=500)
 
 
 # 네트워크 관련 오류만 따로 처리하려면 ClientError를 사용

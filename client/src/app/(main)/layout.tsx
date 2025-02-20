@@ -9,8 +9,8 @@ export default async function MainLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const response = await getModels();
-  const models = response.data;
+  const { data: response } = await getModels();
+  const models = response.data?.models ?? [];
   const error = response.error && { status: response.error.status, message: response.error.message };
 
   return (

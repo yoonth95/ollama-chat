@@ -22,7 +22,7 @@ interface ModelList {
 
 const Header: React.FC = () => {
   const [inputValue, setInputValue] = useState("");
-  const { models: availableModels, error } = useModels(); // 설치된 모델
+  const { models: availableModels = [], error } = useModels(); // 설치된 모델
   const { selectedModel, setSelectedModel } = useModelStore(); // 선택한 모델
 
   const availableModelNames = useMemo(() => availableModels.map((m) => m.name), [availableModels]);

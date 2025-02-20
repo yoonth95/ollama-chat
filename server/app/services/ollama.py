@@ -6,10 +6,7 @@ class OllamaService:
     @staticmethod
     async def get_models() -> ModelList:
         async with aiohttp.ClientSession() as session:
-            async with session.get(f"{settings.OLLAMA_API_BASE_URL}/api/tags") as response:
-                # if response.status != 200:
-                #     raise Exception(f"❌ Ollama API 요청 실패: {response.status}")
-                
+            async with session.get(f"{settings.OLLAMA_API_BASE_URL}/api/tags") as response:                
                 data = await response.json()
                 models = [
                     ModelInfo(

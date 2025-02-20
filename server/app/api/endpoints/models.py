@@ -16,9 +16,9 @@ async def get_models():
 
     try:
         models = await OllamaService.get_models()
-        logger.info(f"✅ 모델 응답 성공: {models}")
-        return JSONResponse(content=create_response(True, "모델 목록 조회 성공", models), status_code=200)
-
+        logger.info(f"models content: {models.model_dump()}")  # 실제 데이터 출력
+        return JSONResponse(content=create_response(True, "모델 목록 조회 성공", models.model_dump()), status_code=200)
+      
     except ClientError as e:
         logger.error(f"🚨 Ollama 접속 오류: {e}")
         return JSONResponse(content=create_response(False, "Ollama 서비스가 실행되지 않았습니다. 설치 또는 실행 상태를 확인하세요.", None), status_code=503)

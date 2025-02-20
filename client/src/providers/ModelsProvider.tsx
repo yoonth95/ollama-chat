@@ -1,12 +1,29 @@
 "use client";
 
 import { createContext, useContext, ReactNode } from "react";
-import { ModelInfoType, ModelListType } from "@/types/modelType";
+import { ModelInfoType } from "@/types/modelType";
+
+interface ModelErrorType {
+  status: number;
+  message: string;
+}
+interface ModelListType {
+  models: ModelInfoType[];
+  error?: ModelErrorType;
+}
 
 const ModelsContext = createContext<ModelListType | null>(null);
 
-export function ModelsProvider({ models, children }: { models: ModelInfoType[]; children: ReactNode }) {
-  return <ModelsContext.Provider value={{ models }}>{children}</ModelsContext.Provider>;
+export function ModelsProvider({
+  models,
+  error,
+  children,
+}: {
+  models: ModelInfoType[];
+  error?: ModelErrorType;
+  children: ReactNode;
+}) {
+  return <ModelsContext.Provider value={{ models, error }}>{children}</ModelsContext.Provider>;
 }
 
 export function useModels() {

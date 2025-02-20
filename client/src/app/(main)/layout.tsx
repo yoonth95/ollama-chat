@@ -9,13 +9,15 @@ export default async function MainLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { data } = await getModels();
+  const response = await getModels();
+  const models = response.data;
+  const error = response.error && { status: response.error.status, message: response.error.message };
 
   return (
     <div className="flex h-screen bg-background">
       <Sidebar />
       <div className="flex flex-1 flex-col p-4">
-        <ModelsProvider models={data.models}>
+        <ModelsProvider models={models} error={error}>
           <Header />
           <main className="flex flex-1 flex-col items-center justify-center">{children}</main>
         </ModelsProvider>

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -25,17 +25,17 @@ const Header: React.FC = () => {
   const { models: availableModels = [], error } = useModels(); // 설치된 모델
   const { selectedModel, setSelectedModel } = useModelStore(); // 선택한 모델
 
-  const availableModelNames = useMemo(() => availableModels.map((m) => m.name), [availableModels]);
+  const availableModelNames = availableModels.map((m) => m.name);
 
   // 다운로드 가능한 모델 필터링
-  const downloadableModels: ModelList = useMemo(() => {
+  const downloadableModels = (): ModelList => {
     const filtered: ModelList = {};
     Object.entries(modelData).forEach(([category, models]) => {
       const available = models.filter((model) => !availableModelNames.includes(model.name));
       if (available.length > 0) filtered[category] = available;
     });
     return filtered;
-  }, [availableModelNames]);
+  };
 
   const handleModelChange = (modelName: string) => {
     setSelectedModel(availableModels.find((m) => m.name === modelName) || null);
@@ -85,7 +85,7 @@ const Header: React.FC = () => {
                       selectedModel={selectedModel}
                       onSelect={handleModelChange}
                     />
-                    <DownloadableModels downloadableModels={downloadableModels} onDownload={handleDownload} />
+                    <DownloadableModels downloadableModels={downloadableModels()} onDownload={handleDownload} />
                   </div>
                 )}
               </ScrollArea>

@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 import { ModelInfoType } from "@/types/modelType";
 
 type ModelStoreType = {
@@ -8,9 +9,17 @@ type ModelStoreType = {
   setModels: (models: ModelInfoType[]) => void;
 };
 
-export const useModelStore = create<ModelStoreType>((set) => ({
-  selectedModel: null,
-  setSelectedModel: (model) => set({ selectedModel: model }),
-  models: [],
-  setModels: (models) => set({ models }),
-}));
+export const useModelStore = create<ModelStoreType>()(
+  persist(
+    (set) => ({
+      selectedModel: null,
+      setSelectedModel: (model) => set({ selectedModel: model }),
+      models: [],
+      setModels: (models) => set({ models }),
+    }),
+    {
+      name: "model-storage", // 로컬스토리지 키 이름
+      partialize: (state) => ({ selectedModel: state.selectedModel }),
+    },
+  ),
+);

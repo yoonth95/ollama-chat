@@ -18,7 +18,7 @@ async def stream_model_download(model_name: str) -> AsyncGenerator[str, None]:
       if response.status != 200:
         error_text = await response.text()
         print(error_text)
-        yield json.dumps(create_response(False, "모델 다운로드 실패", {"status": response.status})) + "\n"
+        yield json.dumps(create_response(False, "모델 다운로드 실패", {"model_name": model_name, "status": response.status})) + "\n"
         return
 
       total_size = 0
@@ -54,9 +54,9 @@ async def stream_model_download(model_name: str) -> AsyncGenerator[str, None]:
             completed_size = 0
             total_size = 0
           
-          yield json.dumps(create_response(True, "다운로드 진행 중", {"digest": digest, "status": "downloading", "progress": round(progress, 2)})) + "\n"
+          yield json.dumps(create_response(True, "다운로드 진행 중", {"model_name": model_name, "digest": digest, "status": "downloading", "progress": round(progress, 2)})) + "\n"
 
-      yield json.dumps(create_response(True, "완료", {"progress": 100})) + "\n"
+      yield json.dumps(create_response(True, "완료", {"model_name": model_name, "status": "success", "progress": 100})) + "\n"
       
     del active_downloads[model_name]  # 다운로드 완료 후 제거
     

@@ -1,81 +1,81 @@
 {
   "DeepSeek-R1": [
     {
-      "name": "deepseek-r1:1.5b",
-      "parameters": "1.78B",
-      "volume": "1.1GB"
+      "model": "deepseek-r1:1.5b",
+      "parameter_size": "1.78B",
+      "size": "1.1GB"
     },
     {
-      "name": "deepseek-r1:7b",
-      "parameters": "7.62B",
-      "volume": "4.7GB"
+      "model": "deepseek-r1:7b",
+      "parameter_size": "7.62B",
+      "size": "4.7GB"
     },
     {
-      "name": "deepseek-r1:8b",
-      "parameters": "8.03B",
-      "volume": "4.9GB"
+      "model": "deepseek-r1:8b",
+      "parameter_size": "8.03B",
+      "size": "4.9GB"
     },
     {
-      "name": "deepseek-r1:14b",
-      "parameters": "14.8B",
-      "volume": "9.0GB"
+      "model": "deepseek-r1:14b",
+      "parameter_size": "14.8B",
+      "size": "9.0GB"
     },
     {
-      "name": "deepseek-r1:32b",
-      "parameters": "32.8B",
-      "volume": "20GB"
+      "model": "deepseek-r1:32b",
+      "parameter_size": "32.8B",
+      "size": "20GB"
     },
     {
-      "name": "deepseek-r1:70b",
-      "parameters": "70.6B",
-      "volume": "43GB"
+      "model": "deepseek-r1:70b",
+      "parameter_size": "70.6B",
+      "size": "43GB"
     },
     {
-      "name": "deepseek-r1:671b",
-      "parameters": "671B",
-      "volume": "404GB"
+      "model": "deepseek-r1:671b",
+      "parameter_size": "671B",
+      "size": "404GB"
     }
   ],
   "Llama": [
     {
-      "name": "llama3.3",
-      "parameters": "70.6B",
-      "volume": "43GB"
+      "model": "llama3.3",
+      "parameter_size": "70.6B",
+      "size": "43GB"
     },
     {
-      "name": "llama3.2:1b",
-      "parameters": "1.24B",
-      "volume": "1.3GB"
+      "model": "llama3.2:1b",
+      "parameter_size": "1.24B",
+      "size": "1.3GB"
     },
     {
-      "name": "llama3.2:3b",
-      "parameters": "3.21B",
-      "volume": "2.0GB"
+      "model": "llama3.2:3b",
+      "parameter_size": "3.21B",
+      "size": "2.0GB"
     },
     {
-      "name": "llama3.1:8b",
-      "parameters": "8.03B",
-      "volume": "4.9GB"
+      "model": "llama3.1:8b",
+      "parameter_size": "8.03B",
+      "size": "4.9GB"
     },
     {
-      "name": "llama3.1:70b",
-      "parameters": "70.6B",
-      "volume": "43GB"
+      "model": "llama3.1:70b",
+      "parameter_size": "70.6B",
+      "size": "43GB"
     },
     {
-      "name": "llama3.1:405b",
-      "parameters": "406B",
-      "volume": "243GB"
+      "model": "llama3.1:405b",
+      "parameter_size": "406B",
+      "size": "243GB"
     },
     {
-      "name": "llama3:8b",
-      "parameters": "8.03B",
-      "volume": "4.7GB"
+      "model": "llama3:8b",
+      "parameter_size": "8.03B",
+      "size": "4.7GB"
     },
     {
-      "name": "llama3:70b",
-      "parameters": "70.6B",
-      "volume": "40GB"
+      "model": "llama3:70b",
+      "parameter_size": "70.6B",
+      "size": "40GB"
     }
   ]
 }

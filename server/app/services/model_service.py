@@ -16,9 +16,9 @@ class ModelService:
         data = await response.json()
         models = [
           ModelInfo(
-            name=model["name"],
-            size=model.get("size"),
-            modified_at=model.get("modified_at")
+            model=model["model"],
+            size=str(round(model.get("size", 0) / (1024 ** 3), 2))+'GB',
+            parameter_size=model.get("details", {}).get("parameter_size")
           )
           for model in data.get("models", [])  # models 없을 경우 빈 리스트 반환
         ]
@@ -26,7 +26,7 @@ class ModelService:
         return ModelList(models=models)
 
   @staticmethod
-  async def post_models(model_name: str) -> StreamingResponse:
+  async def model_download(model_name: str) -> StreamingResponse:
     ## 모델 다운로드 여부 체크
     async with aiohttp.ClientSession() as session:
       async with session.get(f"{settings.OLLAMA_API_BASE_URL}/api/tags") as response:
@@ -38,10 +38,10 @@ class ModelService:
     return StreamingResponse(stream_model_download(model_name), media_type="application/json")
   
   @staticmethod
-  async def post_cancel_model_download(model_name: str):
+  async def model_download_cancel(model_name: str):
     if model_name in active_downloads:
       task = active_downloads.pop(model_name)
       task.cancel()
       return JSONResponse(content=create_response(True, "다운로드 취소", None), status_code=200)
   
-    return JSONResponse(content=create_response(True, "해당 모델이 다운로드가 되고 있지 않습니다.", None), status_code=404)
+    return JSONResponse(content=create_response(False, "해당 모델이 다운로드가 되고 있지 않습니다.", None), status_code=404)

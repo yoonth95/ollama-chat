@@ -2,9 +2,9 @@ from pydantic import BaseModel
 from typing import List, Optional
 
 class ModelInfo(BaseModel):
-  name: str
-  size: Optional[int]
-  modified_at: Optional[str]
+  model: str
+  size: Optional[str]
+  parameter_size: Optional[str]
   
 class ModelList(BaseModel):
   models: List[ModelInfo]

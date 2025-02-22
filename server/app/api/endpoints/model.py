@@ -1,6 +1,6 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Query
 import logging
-from server.app.services.model_service import ModelService
+from app.services.model_service import ModelService
 from app.utils.response import create_response
 from aiohttp import ClientError
 from fastapi.responses import JSONResponse
@@ -30,12 +30,12 @@ async def get_models():
     return JSONResponse(content=create_response(False, "서버 오류", None), status_code=500)
 
 ## 모델 다운로드
-@router.post("/model/download")
-async def post_models(request: ModelNameRequest):
-  logger.info(f"🔍 클라이언트에서 모델 다운로드 요청 받음: {request.model_name}")
+@router.get("/model/download")
+async def model_download(model_name: str = Query(..., description="다운로드할 모델 이름")):
+  logger.info(f"🔍 클라이언트에서 모델 다운로드 요청 받음: {model_name}")
   
   try:
-    return await ModelService.post_models(request.model_name)
+    return await ModelService.model_download(model_name)
     
   except ClientError as e:
     logger.error(f"🚨 Ollama 접속 오류: {e}")
@@ -47,7 +47,7 @@ async def post_models(request: ModelNameRequest):
 
 ## 모델 다운로드 취소
 @router.post("/model/download-cancel")
-async def cancel_model_download(request: ModelNameRequest):
+async def model_download_cancel(request: ModelNameRequest):
   logger.info(f"🔍 클라이언트에서 모델 다운로드 취소")
   
-  return await ModelService.post_cancel_model_download(request.model_name)
+  return await ModelService.model_download_cancel(request.model_name)

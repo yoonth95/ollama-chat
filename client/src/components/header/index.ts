@@ -4,7 +4,8 @@ import InstalledModels from "./InstalledModels";
 import SearchBar from "./SearchBar";
 import ErrorDisplay from "./ErrorDisplay";
 import CancelModelButton from "./CancelModelButton";
-import SubMenuModelButton from "./SubMenuModelButton";
+import DeleteModelButton from "./DeleteModelButton";
+import SubMenuItem from "./SubMenuItem";
 
 export {
   AddModelButton,
@@ -13,5 +14,6 @@ export {
   SearchBar,
   ErrorDisplay,
   CancelModelButton,
-  SubMenuModelButton,
+  SubMenuItem,
+  DeleteModelButton,
 };

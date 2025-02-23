@@ -2,9 +2,10 @@
 
 import React from "react";
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
-import { Check } from "lucide-react";
+import { DeleteModelButton } from "@/components/header";
 import { useModels } from "@/providers/ModelsProvider";
 import { useModelStore } from "@/store/useModelStore";
+import { Check } from "lucide-react";
 
 const InstalledModels = () => {
   const { models } = useModels(); // 설치된 모델
@@ -24,9 +25,10 @@ const InstalledModels = () => {
               <DropdownMenuItem
                 key={model.model}
                 onSelect={() => handleModelChange(model.model)}
-                className="w-full cursor-pointer justify-between px-4 py-2 font-normal text-foreground dark:hover:bg-neutral-700/50"
+                className="w-full cursor-pointer justify-between gap-4 px-4 py-3 font-normal text-foreground dark:hover:bg-neutral-700/50"
               >
-                {model.model}
+                <DeleteModelButton model={model.model} />
+                <span className="flex-grow text-left">{model.model}</span>
                 {selectedModel?.model === model.model && <Check className="h-4 w-4" />}
               </DropdownMenuItem>
             ))}

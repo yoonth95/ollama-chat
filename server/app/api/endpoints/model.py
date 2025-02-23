@@ -47,3 +47,10 @@ async def model_download_cancel(request: ModelNameRequest):
   logger.info(f"🔍 클라이언트에서 모델 다운로드 취소")
   
   return await ModelService.model_download_cancel(request.model_name)
+
+## 모델 삭제
+@router.delete("/model/delete/{model_name}")
+async def model_delete(model_name: str):
+  logger.info(f"🔍 클라이언트에서 모델 삭제 요청 받음")
+  
+  return await ModelService.model_delete(model_name)

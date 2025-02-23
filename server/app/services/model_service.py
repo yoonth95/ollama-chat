@@ -62,3 +62,17 @@ class ModelService:
       return JSONResponse(content=create_response(True, "다운로드 취소", None), status_code=200)
   
     return JSONResponse(content=create_response(False, "해당 모델이 다운로드가 되고 있지 않습니다.", None), status_code=404)
+  
+  @staticmethod
+  async def model_delete(model_name: str):
+    async with aiohttp.ClientSession() as session:
+      url = f"{settings.OLLAMA_API_BASE_URL}/api/delete"
+      data = {"model": model_name}
+      
+      async with session.delete(url, json=data) as response:
+        if response.status == 200:
+          return JSONResponse(content=create_response(True, "모델 삭제 성공", None), status_code=200)
+        elif response.status == 404:
+          return JSONResponse(content=create_response(False, "모델이 존재하지 않습니다.", None), status_code=404)
+        
+        return JSONResponse(content=create_response(False, "모델 삭제 실패", None), status_code=500)

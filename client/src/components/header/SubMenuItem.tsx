@@ -7,10 +7,10 @@ import downloadModel from "@/services/model/downloadModel";
 import { ModelInfoType } from "@/types/modelType";
 import { ArrowDownToLine, LoaderCircle } from "lucide-react";
 
-interface SubMenuModelButtonProps {
+interface SubMenuItemButtonProps {
   model: ModelInfoType;
 }
-const SubMenuModelButton = ({ model }: SubMenuModelButtonProps) => {
+const SubMenuItem = ({ model }: SubMenuItemButtonProps) => {
   const { isPending, downloadProgress, startDownload, updateProgress, finishOrCancelDownload } = useModelDownload(
     model.model,
   );
@@ -52,4 +52,4 @@ const SubMenuModelButton = ({ model }: SubMenuModelButtonProps) => {
   );
 };
 
-export default SubMenuModelButton;
+export default SubMenuItem;

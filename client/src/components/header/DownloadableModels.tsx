@@ -2,7 +2,7 @@
 
 import { useModels } from "@/providers/ModelsProvider";
 import { DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger } from "@/components/ui/dropdown-menu";
-import { SubMenuModelButton } from "@/components/header";
+import { SubMenuItem } from "@/components/header";
 import { ModelInfoType } from "@/types/modelType";
 import modelData from "@/data/modelData.json";
 
@@ -34,7 +34,7 @@ const DownloadableModels = () => {
             </DropdownMenuSubTrigger>
             <DropdownMenuSubContent className="text-foregroun border-zinc-700 bg-zinc-900">
               {models.map((model) => (
-                <SubMenuModelButton key={model.model} model={model} />
+                <SubMenuItem key={model.model} model={model} />
               ))}
             </DropdownMenuSubContent>
           </DropdownMenuSub>

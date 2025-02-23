@@ -14,26 +14,31 @@ async def stream_model_download(model_name: str) -> AsyncGenerator[str, None]:
     # 취소 가능한 태스크 저장
     active_downloads[model_name] = asyncio.current_task()
     
-    async with session.post(url, json=data) as response:
+    async with session.post(url, json=data) as response:      
       if response.status != 200:
         error_text = await response.text()
-        print(error_text)
-        yield json.dumps(create_response(False, "모델 다운로드 실패", {"model_name": model_name, "status": response.status})) + "\n"
+        del active_downloads[model_name]
+        yield json.dumps(create_response(False, error_text, {"model_name": model_name, "status": response.status})) + "\n"
         return
 
       total_size = 0
       completed_size = 0
       seen_digests = {}
 
-      async for chunk in response.content:
+      async for chunk in response.content:       
         if model_name not in active_downloads:  # 다운로드 중단 감지
-          yield json.dumps(create_response(False, "취소", None)) + "\n"
+          del active_downloads[model_name]
+          yield json.dumps(create_response(False, "취소", {"model_name": model_name, "status": response.status})) + "\n"
           return 
                   
         try:
           log = json.loads(chunk.decode("utf-8"))
         except json.JSONDecodeError:
           continue  
+        
+        if "error" in log:
+          del active_downloads[model_name]
+          return
 
         if "total" in log and "completed" in log:
           digest = log["digest"]
@@ -59,6 +64,3 @@ async def stream_model_download(model_name: str) -> AsyncGenerator[str, None]:
       yield json.dumps(create_response(True, "완료", {"model_name": model_name, "status": "success", "progress": 100})) + "\n"
       
     del active_downloads[model_name]  # 다운로드 완료 후 제거
-    
-## yield : 데이터를 Stream으로 반환하는 방식
-## 요청이 들어오면 서버가 비동기적으로 데이터를 부분적으로 전달

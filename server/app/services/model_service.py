@@ -1,5 +1,5 @@
 import aiohttp
-from aiohttp import ClientError
+import json
 from fastapi.responses import JSONResponse
 from fastapi.responses import StreamingResponse
 from app.core.config import settings
@@ -34,8 +34,25 @@ class ModelService:
         if len(data['models']) > 0 and model_name == data['models'][0]['model']:
           return JSONResponse(content=create_response(False, "이미 설치된 모델입니다.", None), status_code=400)
 
-    ## 모델 다운로드
-    return StreamingResponse(stream_model_download(model_name), media_type="application/json")
+    # 모델 다운로드 진행
+    stream = stream_model_download(model_name)
+    
+    first_chunk = await anext(stream, None)
+    try:
+      first_chunk = json.loads(first_chunk)
+      if not first_chunk["ok"]:
+        message_dic = json.loads(first_chunk["message"])
+        return JSONResponse(
+          content=create_response(False, message_dic["error"], None),
+          status_code=first_chunk["data"]["status"]
+        )
+    except Exception as e:
+      return JSONResponse(
+        content=create_response(False, "다운로드 실패", None),
+        status_code=500
+      )
+    
+    return StreamingResponse(stream, media_type="application/json")
   
   @staticmethod
   async def model_download_cancel(model_name: str):

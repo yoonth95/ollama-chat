@@ -41,10 +41,6 @@ async def model_download(model_name: str = Query(..., description="다운로드�
     logger.error(f"🚨 Ollama 접속 오류: {e}")
     return JSONResponse(content=create_response(False, "Ollama 서비스가 실행되지 않았습니다. 설치 또는 실행 상태를 확인하세요.", None), status_code=503)
 
-  except Exception as e:
-    logger.error(f"🚨 모델 조회 오류: {e}")
-    return JSONResponse(content=create_response(False, "서버 오류", None), status_code=500)
-
 ## 모델 다운로드 취소
 @router.post("/model/download-cancel")
 async def model_download_cancel(request: ModelNameRequest):

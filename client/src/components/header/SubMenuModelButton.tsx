@@ -11,11 +11,13 @@ interface SubMenuModelButtonProps {
   model: ModelInfoType;
 }
 const SubMenuModelButton = ({ model }: SubMenuModelButtonProps) => {
-  const { isPending, downloadProgress, startDownload, updateProgress } = useModelDownload(model.model);
+  const { isPending, downloadProgress, startDownload, updateProgress, finishOrCancelDownload } = useModelDownload(
+    model.model,
+  );
 
   const handleDownload = async () => {
     startDownload();
-    await downloadModel(model.model, updateProgress);
+    await downloadModel(model.model, updateProgress, finishOrCancelDownload);
   };
 
   return (

@@ -6,6 +6,7 @@ import { DigestWithProgressType } from "@/store/useModelDownloadStore";
 export default async function downloadModel(
   model_name: string,
   updateProgress: (progress: DigestWithProgressType) => void,
+  finishOrCancelDownload: (model_name: string) => void,
   resetInput?: () => void,
 ) {
   try {
@@ -56,9 +57,11 @@ export default async function downloadModel(
             await revalidateTagAction("models");
             if (resetInput) resetInput();
             toast.success("모델 다운로드가 완료되었습니다.");
+            finishOrCancelDownload(model_name);
           }
         } catch (error) {
           console.error("JSON 파싱 오류", error);
+          finishOrCancelDownload(model_name);
           break;
         }
       }
@@ -67,6 +70,8 @@ export default async function downloadModel(
     console.log(model_name, "다운로드 완료!");
   } catch (error) {
     if (error instanceof ApiError) {
+      toast.error(error.message);
+      finishOrCancelDownload(model_name);
       return { data: null, error: { status: error.status, message: error.message } };
     }
     return { data: null, error: { status: 500, message: "알 수 없는 에러가 발생했습니다." } };

@@ -12,11 +12,12 @@ interface AddModelButtonProps {
 }
 
 export default function AddModelButton({ inputValue, setInputValue }: AddModelButtonProps) {
-  const { isPending, downloadProgress, startDownload, updateProgress } = useModelDownload(inputValue);
+  const { isPending, downloadProgress, startDownload, updateProgress, finishOrCancelDownload } =
+    useModelDownload(inputValue);
 
   const handleDownload = async () => {
     startDownload();
-    await downloadModel(inputValue, updateProgress, () => setInputValue(""));
+    await downloadModel(inputValue, updateProgress, finishOrCancelDownload, () => setInputValue(""));
   };
 
   return (

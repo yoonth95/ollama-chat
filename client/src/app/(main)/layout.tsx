@@ -10,7 +10,7 @@ export default async function MainLayout({
   children: React.ReactNode;
 }>) {
   const { data: response } = await getModels();
-  const models = response.data?.models ?? [];
+  const models = response.models ?? [];
   const error = response.error && { status: response.error.status, message: response.error.message };
 
   return (

@@ -35,6 +35,9 @@ export default {
           foreground: "hsl(var(--accent-foreground))",
         },
       },
+      fontFamily: {
+        pretendard: ["var(--font-pretendard)"],
+      },
     },
   },
 } satisfies Config;

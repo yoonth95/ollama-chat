@@ -60,6 +60,83 @@
     --text-secondary: 0 0% 63.9%;
     --placeholder: 208 9% 69%;
   }
+  .tiptap {
+    code {
+      @apply rounded-[4px] bg-[#87837826] px-1 py-0.5 text-[0.85rem] text-[#EB5757];
+    }
+
+    pre {
+      @apply my-6 rounded-[4px] bg-[#282C34] px-3 py-4 text-inherit;
+
+      code {
+        @apply bg-transparent p-0 text-[0.8rem] text-inherit;
+      }
+
+      .code-block {
+        position: relative;
+
+        select {
+          position: absolute;
+          background-color: var(--white);
+          background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="Black" d="M7 10l5 5 5-5z"/></svg>');
+          right: 0.5rem;
+          top: 0.5rem;
+        }
+      }
+
+      /* Code styling */
+      .hljs-comment,
+      .hljs-quote {
+        @apply text-gray-600;
+      }
+
+      .hljs-variable,
+      .hljs-template-variable,
+      .hljs-attribute,
+      .hljs-tag,
+      .hljs-name,
+      .hljs-regexp,
+      .hljs-link,
+      .hljs-selector-id,
+      .hljs-selector-class {
+        @apply text-red-400;
+      }
+
+      .hljs-number,
+      .hljs-meta,
+      .hljs-built_in,
+      .hljs-builtin-name,
+      .hljs-literal,
+      .hljs-type,
+      .hljs-params {
+        @apply text-orange-300;
+      }
+
+      .hljs-string,
+      .hljs-symbol,
+      .hljs-bullet {
+        @apply text-green-300;
+      }
+
+      .hljs-title,
+      .hljs-section {
+        @apply text-yellow-300;
+      }
+
+      .hljs-keyword,
+      .hljs-selector-tag {
+        @apply text-blue-300;
+      }
+
+      .hljs-emphasis {
+        @apply italic;
+      }
+
+      .hljs-strong {
+        @apply font-bold;
+      }
+    }
+  }
 }
 
 @layer utilities {

@@ -6,28 +6,35 @@ import { Button } from "@/components/ui/button";
 import { Send } from "lucide-react";
 
 const ChatInput = () => {
-  const textRef = useRef<HTMLTextAreaElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  const handleInput = () => {
+    const textarea = textareaRef.current;
+    if (textarea) {
+      textarea.style.height = "auto";
+      textarea.style.height = textarea.scrollHeight + "px";
+    }
+  };
 
   return (
-    <section className="w-full max-w-2xl cursor-text" onClick={() => textRef.current?.focus()}>
-      <div className="relative flex flex-col items-end gap-5 rounded-lg border border-border bg-background py-3 pl-3 pr-3">
+    <section className="mx-auto mb-8 w-full max-w-3xl cursor-text px-4" onClick={() => textareaRef.current?.focus()}>
+      <div className="flex w-full flex-col rounded-3xl dark:bg-accent">
         <Textarea
-          ref={textRef}
-          className="max-h-52 w-full rounded-lg border border-border bg-muted pr-2 text-foreground placeholder:text-muted-foreground"
-          style={{ resize: "none", overflowY: "auto" }}
-          placeholder="AI에게 메시지를 작성하세요"
-          onInput={(e) => {
-            const target = e.target as HTMLTextAreaElement;
-            target.style.height = "auto"; // 높이를 초기화
-            target.style.height = `${Math.min(target.scrollHeight, 208)}px`; // max-h-52 (208px) 유지
-          }}
+          ref={textareaRef}
+          onInput={handleInput}
+          rows={1}
+          placeholder="무엇이든 물어보세요"
+          className="h-[48px] w-full resize-none rounded-t-3xl border-0 px-4 py-3 text-foreground placeholder:text-muted-foreground focus:border-transparent focus:outline-none focus:ring-0 dark:border-accent dark:bg-accent dark:text-white dark:ring-offset-accent dark:focus-visible:ring-0 dark:focus-visible:ring-transparent"
         />
-        <Button
-          variant="icon"
-          className="h-10 w-10 rounded-full bg-primary text-primary-foreground hover:bg-muted hover:text-muted-foreground"
-        >
-          <Send className="!h-4 !w-4" />
-        </Button>
+        <div className="flex items-center justify-end px-3 py-3">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8 rounded-full bg-primary dark:bg-foreground dark:text-primary"
+          >
+            <Send className="h-4 w-4" />
+          </Button>
+        </div>
       </div>
     </section>
   );

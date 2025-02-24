@@ -35,7 +35,7 @@ const Header = () => {
             variant="ghost"
             className="h-fit p-0 text-lg text-foreground dark:ring-offset-background dark:hover:bg-background dark:focus-visible:ring-0 dark:focus-visible:ring-transparent"
           >
-            <span>{selectedModel?.model || "모델 선택"}</span>
+            <span className="font-medium">{selectedModel?.model || "모델 선택"}</span>
             <ChevronDown />
           </Button>
         </DropdownMenuTrigger>

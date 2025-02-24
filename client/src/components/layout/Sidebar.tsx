@@ -22,19 +22,19 @@ const Sidebar = () => {
             <div className="space-y-1">
               <Button
                 variant="ghost"
-                className="text-text-primary w-full justify-start text-sm dark:hover:bg-neutral-700/50"
+                className="text-text-primary w-full justify-start px-2 text-sm dark:hover:bg-neutral-700/50"
               >
                 채팅1
               </Button>
               <Button
                 variant="ghost"
-                className="text-text-primary w-full justify-start text-sm dark:hover:bg-neutral-700/50"
+                className="text-text-primary w-full justify-start px-2 text-sm dark:hover:bg-neutral-700/50"
               >
                 채팅2
               </Button>
               <Button
                 variant="ghost"
-                className="text-text-primary w-full justify-start text-sm dark:hover:bg-neutral-700/50"
+                className="text-text-primary w-full justify-start px-2 text-sm dark:hover:bg-neutral-700/50"
               >
                 채팅3
               </Button>

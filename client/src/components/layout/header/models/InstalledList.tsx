@@ -3,7 +3,7 @@
 import React from "react";
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { DeleteModelButton } from "@/components/layout/header/models";
-import { useModelStore } from "@/components/layout/header/stores/useModelStore";
+import { useModelStore } from "@/stores/useModelStore";
 import { Check } from "lucide-react";
 
 const InstalledModels = () => {

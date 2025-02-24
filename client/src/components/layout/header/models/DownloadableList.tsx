@@ -2,7 +2,7 @@
 
 import { DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger } from "@/components/ui/dropdown-menu";
 import { SubMenuItem } from "@/components/layout/header/models";
-import { useModelStore } from "@/components/layout/header/stores/useModelStore";
+import { useModelStore } from "@/stores/useModelStore";
 import { ModelInfoType } from "@/types/modelType";
 import modelData from "@/data/modelData.json";
 

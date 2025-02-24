@@ -11,7 +11,7 @@ import {
   ErrorDisplay,
   AddModelButton,
 } from "@/components/layout/header/models";
-import { useModelStore } from "@/components/layout/header/stores/useModelStore";
+import { useModelStore } from "@/stores/useModelStore";
 import { ModelErrorType, ModelInfoType } from "@/types/modelType";
 import { ChevronDown } from "lucide-react";
 

@@ -1,7 +1,7 @@
 import React from "react";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { PanelRightOpen, SquarePen } from "lucide-react";
-import { ScrollArea } from "../ui/scroll-area";
 
 const Sidebar = () => {
   return (

@@ -1,8 +1,8 @@
 "use client";
 
-import { useModels } from "@/providers/ModelsProvider";
 import { DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger } from "@/components/ui/dropdown-menu";
-import { SubMenuItem } from "@/components/header";
+import { SubMenuItem } from "@/components/layout/header/models";
+import { useModelStore } from "@/components/layout/header/stores/useModelStore";
 import { ModelInfoType } from "@/types/modelType";
 import modelData from "@/data/modelData.json";
 
@@ -10,7 +10,7 @@ interface ModelList {
   [key: string]: ModelInfoType[];
 }
 const DownloadableModels = () => {
-  const { models: availableModels = [] } = useModels();
+  const { models: availableModels = [] } = useModelStore();
   const availableModelNames = availableModels.map((m) => m.model);
 
   // 다운로드 가능한 모델 필터링

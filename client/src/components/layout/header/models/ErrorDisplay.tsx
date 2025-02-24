@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import { AlertCircle, ExternalLink } from "lucide-react";
 
 interface ErrorDisplayProps {
@@ -41,4 +40,4 @@ const ErrorDisplay = ({ error: { status, message } }: ErrorDisplayProps) => {
   );
 };
 
-export default React.memo(ErrorDisplay);
+export default ErrorDisplay;

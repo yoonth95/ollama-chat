@@ -1,8 +1,7 @@
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
-import Sidebar from "@/components/layout/Sidebar";
-import { ModelsProvider } from "@/providers/ModelsProvider";
-import getModels from "@/services/model/getModels";
+import Sidebar from "@/components/layout/sidebar/Sidebar";
+import Header from "@/components/layout/header/Header";
+import Footer from "@/components/layout/footer/Footer";
+import getModels from "@/components/layout/header/services/getModels";
 
 export default async function MainLayout({
   children,
@@ -17,10 +16,8 @@ export default async function MainLayout({
     <div className="flex h-screen bg-background">
       <Sidebar />
       <div className="flex flex-1 flex-col p-4">
-        <ModelsProvider models={models} error={error}>
-          <Header />
-          <main className="flex flex-1 flex-col items-center justify-center">{children}</main>
-        </ModelsProvider>
+        <Header initialModels={models} initialError={error} />
+        <main className="flex flex-1 flex-col items-center justify-center">{children}</main>
         <Footer />
       </div>
     </div>

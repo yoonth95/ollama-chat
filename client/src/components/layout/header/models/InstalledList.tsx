@@ -2,14 +2,12 @@
 
 import React from "react";
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
-import { DeleteModelButton } from "@/components/header";
-import { useModels } from "@/providers/ModelsProvider";
-import { useModelStore } from "@/store/useModelStore";
+import { DeleteModelButton } from "@/components/layout/header/models";
+import { useModelStore } from "@/components/layout/header/stores/useModelStore";
 import { Check } from "lucide-react";
 
 const InstalledModels = () => {
-  const { models } = useModels(); // 설치된 모델
-  const { selectedModel, setSelectedModel } = useModelStore(); // 선택한 모델
+  const { models, selectedModel, setSelectedModel } = useModelStore();
 
   const handleModelChange = (modelName: string) => {
     setSelectedModel(models.find((m) => m.model === modelName) || null);

@@ -4,15 +4,32 @@ import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import {
+  SearchBar,
+  InstalledModels,
+  DownloadableModels,
+  ErrorDisplay,
+  AddModelButton,
+} from "@/components/layout/header/models";
+import { useModelStore } from "@/components/layout/header/stores/useModelStore";
+import { ModelErrorType, ModelInfoType } from "@/types/modelType";
 import { ChevronDown } from "lucide-react";
-import { SearchBar, InstalledModels, DownloadableModels, ErrorDisplay, AddModelButton } from "@/components/header";
-import { useModels } from "@/providers/ModelsProvider";
-import { useModelStore } from "@/store/useModelStore";
 
-const Header = () => {
+interface HeaderProps {
+  initialModels: ModelInfoType[];
+  initialError?: ModelErrorType;
+}
+
+const Header = ({ initialModels, initialError }: HeaderProps) => {
+  const { setModels, setError } = useModelStore();
+
+  useEffect(() => {
+    setModels(initialModels);
+    setError(initialError);
+  }, [initialModels, initialError, setModels, setError]);
+
   const [inputValue, setInputValue] = useState("");
-  const { selectedModel, setSelectedModel } = useModelStore();
-  const { models, error } = useModels();
+  const { selectedModel, setSelectedModel, models, error } = useModelStore();
 
   useEffect(() => {
     if (!selectedModel) return;

@@ -1,4 +1,4 @@
-import { DigestWithProgressType, useModelDownloadStore } from "@/store/useModelDownloadStore";
+import { DigestWithProgressType, useModelDownloadStore } from "@/components/layout/header/stores/useModelDownloadStore";
 
 export const useModelDownload = (modelName: string) => {
   const { pendingDownloads, downloads, startDownload, updateProgress, finishOrCancelDownload } =

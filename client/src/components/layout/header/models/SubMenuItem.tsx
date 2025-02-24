@@ -1,9 +1,9 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { CancelModelButton } from "@/components/header";
-import { useModelDownload } from "@/hooks/useModelDownload";
-import downloadModel from "@/services/model/downloadModel";
+import { CancelModelButton } from "@/components/layout/header/models";
+import { useModelDownload } from "@/components/layout/header/hooks/useModelDownload";
+import downloadModel from "@/components/layout/header/services/downloadModel";
 import { ModelInfoType } from "@/types/modelType";
 import { ArrowDownToLine, LoaderCircle } from "lucide-react";
 

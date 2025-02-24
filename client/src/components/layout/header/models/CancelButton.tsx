@@ -1,7 +1,7 @@
 "use client";
 
 import { fetchAndCustomError } from "@/lib/fetchAndCustomError";
-import { useModelDownloadStore } from "@/store/useModelDownloadStore";
+import { useModelDownloadStore } from "@/components/layout/header/stores/useModelDownloadStore";
 import { X } from "lucide-react";
 
 const CancelModelButton = ({ model_name }: { model_name: string }) => {

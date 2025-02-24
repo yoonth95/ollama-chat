@@ -1,7 +1,7 @@
 import { ApiError } from "@/lib/fetchAndCustomError";
 import { revalidateTagAction } from "@/actions/revalidateTagAction";
 import { toast } from "react-toastify";
-import { DigestWithProgressType } from "@/store/useModelDownloadStore";
+import { DigestWithProgressType } from "@/components/layout/header/stores/useModelDownloadStore";
 
 export default async function downloadModel(
   model_name: string,

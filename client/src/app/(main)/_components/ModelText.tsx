@@ -1,6 +1,6 @@
 "use client";
 
-import { useModelStore } from "@/store/useModelStore";
+import { useModelStore } from "@/components/layout/header/stores/useModelStore";
 
 const ModelText = () => {
   const { selectedModel } = useModelStore();

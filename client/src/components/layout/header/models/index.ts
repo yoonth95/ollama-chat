@@ -1,10 +1,10 @@
-import AddModelButton from "./AddModelButton";
-import DownloadableModels from "./DownloadableModels";
-import InstalledModels from "./InstalledModels";
+import AddModelButton from "./AddButton";
+import DownloadableModels from "./DownloadableList";
+import InstalledModels from "./InstalledList";
 import SearchBar from "./SearchBar";
 import ErrorDisplay from "./ErrorDisplay";
-import CancelModelButton from "./CancelModelButton";
-import DeleteModelButton from "./DeleteModelButton";
+import CancelModelButton from "./CancelButton";
+import DeleteModelButton from "./DeleteButton";
 import SubMenuItem from "./SubMenuItem";
 
 export {

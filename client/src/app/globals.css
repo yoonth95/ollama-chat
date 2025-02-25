@@ -29,7 +29,7 @@
     --input-bg: 0 0% 12%;
     --text-primary: 0 0% 98%;
     --text-secondary: 0 0% 63.9%;
-    --placeholder: 208 9% 69%;
+    --placeholder: #adb5bd;
   }
 
   .dark {
@@ -58,15 +58,23 @@
     --input-bg: 0 0% 12%;
     --text-primary: 0 0% 98%;
     --text-secondary: 0 0% 63.9%;
-    --placeholder: 208 9% 69%;
+    --placeholder: #adb5bd;
   }
   .tiptap {
+    p.is-editor-empty:first-child::before {
+      color: var(--placeholder);
+      content: attr(data-placeholder);
+      float: left;
+      height: 0;
+      pointer-events: none;
+    }
+
     code {
       @apply rounded-[4px] bg-[#87837826] px-1 py-0.5 text-[0.85rem] text-[#EB5757];
     }
 
     pre {
-      @apply my-6 rounded-[4px] bg-[#282C34] px-3 py-4 text-inherit;
+      @apply my-6 rounded-[4px] bg-[#282c34] p-2 text-inherit;
 
       code {
         @apply bg-transparent p-0 text-[0.8rem] text-inherit;

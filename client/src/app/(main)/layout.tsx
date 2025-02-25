@@ -8,15 +8,13 @@ export default async function MainLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { data: response } = await getModels();
-  const models = response.models ?? [];
-  const error = response.error && { status: response.error.status, message: response.error.message };
+  const { data: responseData, error: responseError } = await getModels();
 
   return (
     <div className="flex h-screen bg-background">
       <Sidebar />
       <div className="flex flex-1 flex-col p-4">
-        <Header initialModels={models} initialError={error} />
+        <Header initialModels={responseData.models ?? []} initialError={responseError} />
         <main className="flex flex-1 flex-col items-center justify-center">{children}</main>
         <Footer />
       </div>

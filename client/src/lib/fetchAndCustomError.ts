@@ -23,11 +23,11 @@ export const fetchAndCustomError = async (url: string, options?: RequestInit, is
     return data;
   } catch (error) {
     if (error instanceof ApiError) {
-      toast.error(error.message);
-      throw error;
+      // toast.error(error.message);
+      throw new ApiError(error.status, error.message);
     }
 
-    toast.error("서버 오류가 발생했습니다.");
+    // toast.error("서버 오류가 발생했습니다.");
     throw new ApiError(500, "서버 오류가 발생했습니다.");
   }
 };

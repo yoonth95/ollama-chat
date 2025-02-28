@@ -1,11 +1,12 @@
 import React, { RefObject, useImperativeHandle } from "react";
-import { useEditor, EditorContent, ReactNodeViewRenderer } from "@tiptap/react";
+import { useEditor, EditorContent, ReactNodeViewRenderer, Editor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Code from "@tiptap/extension-code";
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 import Placeholder from "@tiptap/extension-placeholder";
 import { all, createLowlight } from "lowlight";
 import CodeBlockComponent from "@/components/editor/CodeBlockComponent";
+import { getFormattedContentFromView } from "@/utils/editorUtils";
 
 const lowlight = createLowlight(all);
 
@@ -13,6 +14,7 @@ export interface TiptapEditorRef {
   getText: () => string;
   clearContent: () => void;
   focus: () => void;
+  getEditor: () => Editor | null;
 }
 
 interface TiptapEditorProps {
@@ -56,37 +58,13 @@ const TiptapEditor = ({ placeholder = "메시지를 입력하세요...", onSubmi
           if (event.key === "Enter" && !event.shiftKey) {
             event.preventDefault();
 
-            // 형식을 유지하면서 텍스트 내용 가져오기
-            let formattedContent = "";
-            let lastNodeType = "";
+            // 에디터 내용이 비어있는 경우 제출하지 않음
+            if (!view.state.doc.textContent) return false;
 
-            // 모든 최상위 노드를 순회하며 내용 구성
-            view.state.doc.forEach((node) => {
-              const nodeType = node.type.name;
-              const nodeText = node.textContent;
+            // 에디터 내용을 마크다운 형식으로 가져오기
+            const formattedContent = getFormattedContentFromView(view);
 
-              // code-block과 일반 텍스트 사이에 줄바꿈 추가
-              if (lastNodeType === "codeBlock" && nodeType !== "codeBlock") {
-                formattedContent += "\n\n";
-              } else if (lastNodeType !== "codeBlock" && nodeType === "codeBlock") {
-                formattedContent += "\n\n";
-              } else if (lastNodeType && nodeType !== lastNodeType) {
-                // 다른 유형의 노드 사이에 줄바꿈 추가
-                formattedContent += "\n";
-              }
-
-              // 코드 블록인 경우 ```로 감싸기
-              if (nodeType === "codeBlock") {
-                const language = node.attrs.language || "";
-                formattedContent += "```" + language + "\n" + nodeText + "\n```";
-              } else {
-                formattedContent += nodeText;
-              }
-
-              lastNodeType = nodeType;
-            });
-
-            if (formattedContent.trim()) {
+            if (formattedContent) {
               onSubmit?.(formattedContent);
 
               // 입력 후 에디터 내용 초기화
@@ -130,14 +108,16 @@ const TiptapEditor = ({ placeholder = "메시지를 입력하세요...", onSubmi
     },
   });
 
-  // useImperativeHandle을 사용하여 ref 노출
-  if (editorRef) {
-    useImperativeHandle(editorRef, () => ({
+  useImperativeHandle(
+    editorRef,
+    () => ({
       getText: () => editor?.getText() || "",
       clearContent: () => editor?.commands.clearContent(),
       focus: () => editor?.commands.focus("end"),
-    }));
-  }
+      getEditor: () => editor,
+    }),
+    [editor],
+  );
 
   return (
     <div className="min-h-[48px] rounded-t-2xl">

@@ -22,28 +22,18 @@ interface HeaderProps {
 
 const Header = ({ initialModels, initialError }: HeaderProps) => {
   const { setModels, setError } = useModelStore();
+  const [inputValue, setInputValue] = useState("");
+  const { selectedModel, error } = useModelStore();
 
+  // 초기 데이터로 모델 목록과 에러 설정
   useEffect(() => {
     setModels(initialModels);
     setError(initialError);
   }, [initialModels, initialError, setModels, setError]);
 
-  const [inputValue, setInputValue] = useState("");
-  const { selectedModel, setSelectedModel, models, error } = useModelStore();
-
-  useEffect(() => {
-    if (!selectedModel) return;
-
-    const modelSet = new Set(models.map((model) => model.model));
-    if (!modelSet.has(selectedModel.model)) {
-      setSelectedModel(null);
-    }
-  }, [models, selectedModel, setSelectedModel]);
-
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
   };
-
   return (
     <header>
       <DropdownMenu>

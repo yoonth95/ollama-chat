@@ -1,18 +1,24 @@
-import React from "react";
+import React, { RefObject, useImperativeHandle } from "react";
 import { useEditor, EditorContent, ReactNodeViewRenderer } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Code from "@tiptap/extension-code";
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 import Placeholder from "@tiptap/extension-placeholder";
 import { all, createLowlight } from "lowlight";
-import CodeBlockComponent from "./CodeBlockComponent";
+import CodeBlockComponent from "@/components/editor/CodeBlockComponent";
 
 const lowlight = createLowlight(all);
+
+export interface TiptapEditorRef {
+  getText: () => string;
+  clearContent: () => void;
+  focus: () => void;
+}
 
 interface TiptapEditorProps {
   placeholder?: string;
   onSubmit?: (content: string) => void;
-  editorRef?: (actions: { getText: () => string; clearContent: () => void }) => void;
+  editorRef?: RefObject<TiptapEditorRef | null>;
 }
 
 const TiptapEditor = ({ placeholder = "메시지를 입력하세요...", onSubmit, editorRef }: TiptapEditorProps) => {
@@ -81,10 +87,9 @@ const TiptapEditor = ({ placeholder = "메시지를 입력하세요...", onSubmi
             });
 
             if (formattedContent.trim()) {
-              // 입력 내용이 있을 때만 콜백 실행
               onSubmit?.(formattedContent);
 
-              // 입력 후 에디터 내용 지우기
+              // 입력 후 에디터 내용 초기화
               view.dispatch(view.state.tr.delete(0, view.state.doc.content.size));
             }
 
@@ -123,16 +128,16 @@ const TiptapEditor = ({ placeholder = "메시지를 입력하세요...", onSubmi
         },
       },
     },
-    onCreate: ({ editor }) => {
-      // 생성 시 에디터 제어 메서드 노출
-      if (editorRef) {
-        editorRef({
-          getText: () => editor.getHTML(),
-          clearContent: () => editor.commands.clearContent(),
-        });
-      }
-    },
   });
+
+  // useImperativeHandle을 사용하여 ref 노출
+  if (editorRef) {
+    useImperativeHandle(editorRef, () => ({
+      getText: () => editor?.getText() || "",
+      clearContent: () => editor?.commands.clearContent(),
+      focus: () => editor?.commands.focus("end"),
+    }));
+  }
 
   return (
     <div className="min-h-[48px] rounded-t-2xl">

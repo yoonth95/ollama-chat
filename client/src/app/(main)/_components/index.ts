@@ -1,4 +1,4 @@
 import ModelText from "./ModelText";
-import ChatInput from "./ChatInput";
+import ChatInputContainer from "./ChatInputContainer";
 
-export { ModelText, ChatInput };
+export { ModelText, ChatInputContainer };

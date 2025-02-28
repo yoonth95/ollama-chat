@@ -1,15 +1,17 @@
 "use client";
 
 import React, { useRef } from "react";
+import { toast } from "react-toastify";
 import { Button } from "@/components/ui/button";
 import TiptapEditor, { TiptapEditorRef } from "@/components/editor/TiptapEditor";
 import { getFormattedContentFromEditor } from "@/utils/editorUtils";
+import { useModelStore } from "@/stores/useModelStore";
 import { Send } from "lucide-react";
 
 const ChatInputContainer = () => {
-  // 에디터 ref 생성
   const editorRef = useRef<TiptapEditorRef>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const { selectedModel } = useModelStore();
 
   // 컨테이너 클릭 시 에디터에 포커스
   const handleContainerClick = () => {
@@ -20,13 +22,24 @@ const ChatInputContainer = () => {
 
   // Enter 키 입력 시 질문 전송
   const handleSend = (content: string) => {
+    if (!selectedModel) {
+      toast.error("모델을 선택해주세요.");
+      return;
+    }
+
     if (content.trim()) {
       console.log(content);
+      editorRef.current?.clearContent();
     }
   };
 
   // 전송 버튼 클릭 시 질문 전송
   const handleSendButtonClick = () => {
+    if (!selectedModel) {
+      toast.error("모델을 선택해주세요.");
+      return;
+    }
+
     const editor = editorRef.current?.getEditor();
     if (!editor) return;
 

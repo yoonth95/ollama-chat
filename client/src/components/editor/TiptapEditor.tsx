@@ -64,12 +64,7 @@ const TiptapEditor = ({ placeholder = "메시지를 입력하세요...", onSubmi
             // 에디터 내용을 마크다운 형식으로 가져오기
             const formattedContent = getFormattedContentFromView(view);
 
-            if (formattedContent) {
-              onSubmit?.(formattedContent);
-
-              // 입력 후 에디터 내용 초기화
-              view.dispatch(view.state.tr.delete(0, view.state.doc.content.size));
-            }
+            if (formattedContent) onSubmit?.(formattedContent);
 
             return true;
           }

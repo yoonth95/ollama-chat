@@ -21,11 +21,9 @@ interface HeaderProps {
 }
 
 const Header = ({ initialModels, initialError }: HeaderProps) => {
-  const { setModels, setError } = useModelStore();
   const [inputValue, setInputValue] = useState("");
-  const { selectedModel, error } = useModelStore();
+  const { selectedModel, error, setModels, setError } = useModelStore();
 
-  // 초기 데이터로 모델 목록과 에러 설정
   useEffect(() => {
     setModels(initialModels);
     setError(initialError);

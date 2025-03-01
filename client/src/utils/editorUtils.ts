@@ -1,18 +1,16 @@
 import { RefObject } from "react";
 import { Editor } from "@tiptap/react";
-import { TiptapEditorRef } from "@/components/editor/TiptapEditor";
 import { EditorView } from "prosemirror-view";
 import { Node as ProsemirrorNode } from "prosemirror-model";
+import { toast } from "react-toastify";
+import { TiptapEditorRef } from "@/components/editor/TiptapEditor";
+import { ModelInfoType } from "@/types/modelType";
 
-// EditorRef에서 마크다운 형식으로 내용을 가져오는 유틸 함수
-export const getFormattedContent = (editorRef: RefObject<TiptapEditorRef | null>): string => {
-  const editor = editorRef.current?.getEditor();
-  if (!editor || !editor.view) return "";
-
+export const getFormattedContentFromEditor = (editor: Editor): string => {
+  if (!editor.view) return "";
   return getFormattedContentFromView(editor.view);
 };
 
-// EditorView에서 마크다운 형식으로 내용을 가져오는 유틸 함수
 export const getFormattedContentFromView = (view: EditorView): string => {
   let formattedContent = "";
   let lastNodeType = "";
@@ -48,8 +46,39 @@ export const getFormattedContentFromView = (view: EditorView): string => {
   return formattedContent.trim();
 };
 
-// Editor 인스턴스에서 마크다운 형식으로 내용을 가져오는 유틸 함수
-export const getFormattedContentFromEditor = (editor: Editor): string => {
-  if (!editor.view) return "";
-  return getFormattedContentFromView(editor.view);
+// EditorView 또는 editorRef에서 내용을 가져와서 마크다운 형식으로 반환
+export const getFormattedContent = (
+  selectedModel: ModelInfoType | null,
+  source: EditorView | RefObject<TiptapEditorRef | null>,
+) => {
+  if (!selectedModel) {
+    toast.error("모델을 선택해주세요.");
+    return false;
+  }
+
+  let formattedContent = "";
+  let editorRef: RefObject<TiptapEditorRef | null> | null = null;
+
+  // EditorView 타입인 경우 (Enter 키 이벤트에서 호출된 경우)
+  if ("state" in source) {
+    const view = source as EditorView;
+
+    if (!view.state.doc.textContent) return false; // 내용이 비어있는 경우
+
+    formattedContent = getFormattedContentFromView(view);
+  }
+  // editorRef 타입인 경우 (버튼 클릭에서 호출된 경우)
+  else {
+    editorRef = source as RefObject<TiptapEditorRef | null>;
+    const editor = editorRef.current?.getEditor();
+
+    // 내용이 비어있는 경우
+    if (!editor || !editor.view) return false;
+    if (!editor.view.state.doc.textContent) return false;
+
+    formattedContent = getFormattedContentFromEditor(editor);
+  }
+
+  if (formattedContent) return formattedContent;
+  return false;
 };

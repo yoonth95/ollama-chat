@@ -4,9 +4,9 @@ import StarterKit from "@tiptap/starter-kit";
 import Code from "@tiptap/extension-code";
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 import Placeholder from "@tiptap/extension-placeholder";
+import { EditorView } from "prosemirror-view";
 import { all, createLowlight } from "lowlight";
 import CodeBlockComponent from "@/components/editor/CodeBlockComponent";
-import { getFormattedContentFromView } from "@/utils/editorUtils";
 
 const lowlight = createLowlight(all);
 
@@ -19,7 +19,7 @@ export interface TiptapEditorRef {
 
 interface TiptapEditorProps {
   placeholder?: string;
-  onSubmit?: (content: string) => void;
+  onSubmit?: (source: EditorView | RefObject<TiptapEditorRef | null>) => void;
   editorRef?: RefObject<TiptapEditorRef | null>;
 }
 
@@ -28,6 +28,7 @@ const TiptapEditor = ({ placeholder = "메시지를 입력하세요...", onSubmi
     extensions: [
       StarterKit.configure({
         codeBlock: false,
+        code: false,
       }),
       Code.configure({
         HTMLAttributes: {
@@ -44,12 +45,13 @@ const TiptapEditor = ({ placeholder = "메시지를 입력하세요...", onSubmi
         emptyEditorClass: "is-editor-empty",
       }),
     ],
-    content: "",
+    content: "<textarea></textarea>",
     editorProps: {
       attributes: {
         class: "focus:outline-none w-full px-4 py-3 max-h-52 overflow-y-auto",
       },
       handleDOMEvents: {
+        beforeinput: () => true,
         keydown: (view, event) => {
           // Shift+Enter는 줄바꿈 허용
           if (event.key === "Enter" && event.shiftKey) return false;
@@ -57,14 +59,7 @@ const TiptapEditor = ({ placeholder = "메시지를 입력하세요...", onSubmi
           // Enter는 줄바꿈 방지, 제출 (텍스트 내용 가져오기)
           if (event.key === "Enter" && !event.shiftKey) {
             event.preventDefault();
-
-            // 에디터 내용이 비어있는 경우 제출하지 않음
-            if (!view.state.doc.textContent) return false;
-
-            // 에디터 내용을 마크다운 형식으로 가져오기
-            const formattedContent = getFormattedContentFromView(view);
-
-            if (formattedContent) onSubmit?.(formattedContent);
+            onSubmit?.(view);
 
             return true;
           }
@@ -101,6 +96,7 @@ const TiptapEditor = ({ placeholder = "메시지를 입력하세요...", onSubmi
         },
       },
     },
+    immediatelyRender: false,
   });
 
   useImperativeHandle(

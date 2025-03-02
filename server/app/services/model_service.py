@@ -23,7 +23,9 @@ class ModelService:
           for model in data.get("models", [])  # models 없을 경우 빈 리스트 반환
         ]
         
-        return ModelList(models=models)
+        data = (ModelList(models=models).model_dump())["models"]
+        return JSONResponse(content=create_response(True, "모델 목록 조회 성공", data), status_code=200)
+
 
   @staticmethod
   async def model_download(model_name: str) -> StreamingResponse:

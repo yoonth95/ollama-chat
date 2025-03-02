@@ -18,9 +18,6 @@ async def get_models():
   logger.info("🔍 클라이언트에서 모델 목록 요청 받음")
 
   return await ModelService.get_models()
-  # models = await ModelService.get_models()
-  # logger.info(f"models content: {models.model_dump()}")
-  # return JSONResponse(content=create_response(True, "모델 목록 조회 성공", models.model_dump()), status_code=200)
 
 ## 모델 다운로드
 @router.get("/model/download")

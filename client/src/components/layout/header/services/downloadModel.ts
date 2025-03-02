@@ -1,6 +1,5 @@
-import { ApiError } from "@/lib/fetchAndCustomError";
-import { revalidateTagAction } from "@/actions/revalidateTagAction";
 import { toast } from "react-toastify";
+import { revalidateTagAction } from "@/actions/revalidateTagAction";
 import { DigestWithProgressType } from "@/components/layout/header/stores/useModelDownloadStore";
 
 export default async function downloadModel(
@@ -19,8 +18,11 @@ export default async function downloadModel(
     );
 
     if (!response.ok) {
-      const result = await response.json();
-      throw new ApiError(response.status, result.message || "API 요청 오류 발생");
+      const errorData = await response.json();
+      finishOrCancelDownload(model_name);
+      revalidateTagAction("models");
+      toast.error(errorData.message || "다운로드 요청 실패");
+      return;
     }
 
     const reader = response.body?.getReader();
@@ -54,26 +56,22 @@ export default async function downloadModel(
           }
 
           if (status === "success") {
+            finishOrCancelDownload(model_name);
             await revalidateTagAction("models");
             if (resetInput) resetInput();
             toast.success("모델 다운로드가 완료되었습니다.");
-            finishOrCancelDownload(model_name);
           }
         } catch (error) {
-          console.error("JSON 파싱 오류", error);
           finishOrCancelDownload(model_name);
+          const errorMessage = error instanceof Error ? error.message : "JSON 파싱 오류";
+          toast.error(errorMessage);
           break;
         }
       }
     }
-
-    console.log(model_name, "다운로드 완료!");
   } catch (error) {
-    if (error instanceof ApiError) {
-      toast.error(error.message);
-      finishOrCancelDownload(model_name);
-      return { data: null, error: { status: error.status, message: error.message } };
-    }
-    return { data: null, error: { status: 500, message: "알 수 없는 에러가 발생했습니다." } };
+    const errorMessage = error instanceof Error ? error.message : "알 수 없는 오류가 발생했습니다.";
+    console.log(errorMessage);
+    finishOrCancelDownload(model_name);
   }
 }

@@ -1,7 +1,7 @@
 import Sidebar from "@/components/layout/sidebar/Sidebar";
 import Header from "@/components/layout/header/Header";
 import Footer from "@/components/layout/footer/Footer";
-import getModels from "@/components/layout/header/services/getModels";
+import { getModels } from "@/components/layout/header/services";
 
 export default async function MainLayout({
   children,

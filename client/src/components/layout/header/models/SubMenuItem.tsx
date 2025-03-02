@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { CancelModelButton } from "@/components/layout/header/models";
 import { useModelDownload } from "@/components/layout/header/hooks/useModelDownload";
-import downloadModel from "@/components/layout/header/services/downloadModel";
+import { downloadModel } from "@/components/layout/header/services";
 import { ModelInfoType } from "@/types/modelType";
 import { ArrowDownToLine, LoaderCircle } from "lucide-react";
 

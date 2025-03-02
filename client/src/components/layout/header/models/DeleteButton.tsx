@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import deleteModel from "@/components/layout/header/services/deleteModel";
+import { deleteModel } from "@/components/layout/header/services";
 import { Trash2 } from "lucide-react";
 
 const DeleteModelButton = ({ model }: { model: string }) => {

@@ -1,27 +1,17 @@
 "use client";
 
-import { fetchAndCustomError } from "@/lib/fetchAndCustomError";
 import { useModelDownloadStore } from "@/components/layout/header/stores/useModelDownloadStore";
+import { cancelModel } from "@/components/layout/header/services";
 import { X } from "lucide-react";
 
 const CancelModelButton = ({ model_name }: { model_name: string }) => {
   const { finishOrCancelDownload } = useModelDownloadStore();
 
   const handleModelDownloadCancel = async (model_name: string) => {
-    try {
-      await fetchAndCustomError(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/model/download-cancel`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ model_name }),
-        },
-        true,
-      );
-      finishOrCancelDownload(model_name);
-    } catch (error) {
-      console.error(error);
-    }
+    const response = await cancelModel({ model_name });
+    const { ok } = response;
+
+    if (!ok) finishOrCancelDownload(model_name);
   };
 
   return (

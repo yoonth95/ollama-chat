@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 
 type FetchOptionsType<T = unknown> = {
   method?: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
-  body?: T extends object ? string : never;
+  body?: T extends object ? string | T : never;
   headers?: HeadersInit;
   cache?: RequestCache;
   next?: {
@@ -13,18 +13,18 @@ type FetchOptionsType<T = unknown> = {
   isToast?: boolean;
 };
 
-interface ApiResponseType<T> {
+type ApiResponseType<T> = {
   ok: boolean;
   message: string;
   data: T | null;
-}
+};
 
-interface FetchResultType<T> {
+type FetchResultType<T> = {
   data: T | null;
   message: string;
   ok: boolean;
   status: number;
-}
+};
 
 /**
  * 커스텀 fetch 함수
@@ -35,8 +35,8 @@ interface FetchResultType<T> {
  */
 export async function customFetch<T>(
   endpoint: string,
-  schema: z.ZodType<T>,
-  options: FetchOptionsType = {},
+  schema?: z.ZodType<T>,
+  options: FetchOptionsType<T> = {},
 ): Promise<FetchResultType<T>> {
   const { method = "GET", body, headers = {}, next, isToast = false } = options;
 
@@ -68,25 +68,25 @@ export async function customFetch<T>(
     }
 
     // 데이터가 있고 GET 요청인 경우에만 Zod로 검증
-    if (method === "GET" && data) {
+    if (schema && data) {
       try {
         const validatedData = schema.parse(data);
 
         if (isToast) toast.success(message || "요청이 성공적으로 처리되었습니다.");
 
-        return { data: validatedData, message, ok: true, status };
+        return { data: validatedData, message, ok: true, status: 200 };
       } catch (validationError) {
         console.error("데이터 형식이 올바르지 않습니다.", validationError);
 
         if (isToast) toast.error("데이터 형식이 올바르지 않습니다.");
 
-        return { data: null, message: "데이터 유효성 검증 실패", ok: false, status };
+        return { data: null, message: "데이터 유효성 검증 실패", ok: false, status: 400 };
       }
     }
 
     // POST, DELETE 등의 요청이거나 데이터가 없는 경우
     if (isToast) toast.success(message || "요청이 성공적으로 처리되었습니다.");
-    return { data, message, ok: true, status };
+    return { data, message, ok: true, status: 200 };
   } catch (error) {
     // 서버 에러, 네트워크 에러 등
     console.error("Fetch error:", error);

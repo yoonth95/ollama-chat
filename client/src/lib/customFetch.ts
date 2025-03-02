@@ -19,6 +19,13 @@ interface ApiResponseType<T> {
   data: T | null;
 }
 
+interface FetchResultType<T> {
+  data: T | null;
+  message: string;
+  ok: boolean;
+  status: number;
+}
+
 /**
  * 커스텀 fetch 함수
  * @param endpoint API 엔드포인트
@@ -30,7 +37,7 @@ export async function customFetch<T>(
   endpoint: string,
   schema: z.ZodType<T>,
   options: FetchOptionsType = {},
-): Promise<{ data: T | null; message: string; ok: boolean }> {
+): Promise<FetchResultType<T>> {
   const { method = "GET", body, headers = {}, next, isToast = false } = options;
 
   const requestOptions: RequestInit = {
@@ -50,13 +57,14 @@ export async function customFetch<T>(
 
   try {
     const response = await fetch(endpoint, requestOptions);
+    const status = response.status;
     const responseData = (await response.json()) as ApiResponseType<T>;
 
     const { ok, message, data } = responseData;
 
     if (!ok) {
       if (isToast) toast.error(message || "요청이 실패했습니다.");
-      return { data: null, message, ok: false };
+      return { data: null, message, ok: false, status };
     }
 
     // 데이터가 있고 GET 요청인 경우에만 Zod로 검증
@@ -66,25 +74,26 @@ export async function customFetch<T>(
 
         if (isToast) toast.success(message || "요청이 성공적으로 처리되었습니다.");
 
-        return { data: validatedData, message, ok: true };
+        return { data: validatedData, message, ok: true, status };
       } catch (validationError) {
         console.error("데이터 형식이 올바르지 않습니다.", validationError);
 
         if (isToast) toast.error("데이터 형식이 올바르지 않습니다.");
 
-        return { data: null, message: "데이터 유효성 검증 실패", ok: false };
+        return { data: null, message: "데이터 유효성 검증 실패", ok: false, status };
       }
     }
 
     // POST, DELETE 등의 요청이거나 데이터가 없는 경우
     if (isToast) toast.success(message || "요청이 성공적으로 처리되었습니다.");
-    return { data, message, ok: true };
+    return { data, message, ok: true, status };
   } catch (error) {
+    // 서버 에러, 네트워크 에러 등
     console.error("Fetch error:", error);
     const errorMessage = error instanceof Error ? error.message : "알 수 없는 오류가 발생했습니다.";
 
     if (isToast) toast.error(errorMessage);
 
-    return { data: null, message: errorMessage, ok: false };
+    return { data: null, message: errorMessage, ok: false, status: 500 };
   }
 }

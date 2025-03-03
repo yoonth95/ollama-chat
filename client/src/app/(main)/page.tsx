@@ -1,4 +1,5 @@
-import { ModelText, ChatInputContainer } from "@/app/(main)/_components";
+import { ModelText } from "@/app/(main)/_components";
+import ChatInputContainer from "@/components/chat/ChatInputContainer";
 
 export default function MainPage() {
   return (

@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import TiptapEditor, { TiptapEditorRef } from "@/components/editor/TiptapEditor";
 import { getFormattedContent } from "@/utils/editorUtils";
 import { useModelStore } from "@/stores/useModelStore";
-import { sendMessageAction } from "@/app/(main)/actions/sendMessageAction";
+import { sendMessageAction } from "@/app/(layout)/(home)/actions/sendMessageAction";
 import { Send } from "lucide-react";
 
 const ChatInputContainer = () => {

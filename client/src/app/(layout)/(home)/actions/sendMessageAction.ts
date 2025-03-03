@@ -2,7 +2,7 @@
 
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import createChatRoom from "@/app/(main)/services/createChatRoom";
+import createChatRoom from "@/app/(layout)/(home)/services/createChatRoom";
 
 // 질문 전송
 export const sendMessageAction = async (_prevState: unknown, queryData: FormData) => {

@@ -1,9 +1,9 @@
 import { z } from "zod";
 import { toast } from "react-toastify";
 
-type FetchOptionsType<T = unknown> = {
+type FetchOptionsType<TReq = unknown> = {
   method?: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
-  body?: T extends object ? string | T : never;
+  body?: TReq;
   headers?: HeadersInit;
   cache?: RequestCache;
   next?: {
@@ -29,15 +29,15 @@ type FetchResultType<T> = {
 /**
  * 커스텀 fetch 함수
  * @param endpoint API 엔드포인트
- * @param schema Zod 스키마
+ * @param schema Zod 스키마 (응답 데이터 검증용)
  * @param options 요청 옵션 (method, body, headers, next.js 옵션 등)
  * @returns 검증된 데이터와 메타데이터를 포함한 객체
  */
-export async function customFetch<T>(
+export async function customFetch<TRes, TReq = unknown>(
   endpoint: string,
-  schema?: z.ZodType<T>,
-  options: FetchOptionsType<T> = {},
-): Promise<FetchResultType<T>> {
+  schema?: z.ZodType<TRes>,
+  options: FetchOptionsType<TReq> = {},
+): Promise<FetchResultType<TRes>> {
   const { method = "GET", body, headers = {}, next, isToast = false } = options;
 
   const requestOptions: RequestInit = {
@@ -58,7 +58,7 @@ export async function customFetch<T>(
   try {
     const response = await fetch(endpoint, requestOptions);
     const status = response.status;
-    const responseData = (await response.json()) as ApiResponseType<T>;
+    const responseData = (await response.json()) as ApiResponseType<TRes>;
 
     const { ok, message, data } = responseData;
 
@@ -67,7 +67,7 @@ export async function customFetch<T>(
       return { data: null, message, ok: false, status };
     }
 
-    // 데이터가 있고 GET 요청인 경우에만 Zod로 검증
+    // 데이터가 있고 스키마가 제공된 경우에만 Zod로 검증
     if (schema && data) {
       try {
         const validatedData = schema.parse(data);

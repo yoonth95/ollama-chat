@@ -19,7 +19,7 @@ export interface TiptapEditorRef {
 
 interface TiptapEditorProps {
   placeholder?: string;
-  onSubmit?: (source: EditorView | RefObject<TiptapEditorRef | null>) => void;
+  onSubmit?: (source: EditorView) => void;
   editorRef?: RefObject<TiptapEditorRef | null>;
 }
 

@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
+from app.db.database import init_db
 from app.api.endpoints import model
 from app.api.endpoints import chat
 
@@ -12,6 +13,8 @@ def create_app() -> FastAPI:
 
   configure_cors(app)
   register_routers(app)
+  
+  init_db()
 
   return app
 

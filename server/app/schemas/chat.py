@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from datetime import datetime
 from typing import List, Optional, Literal
 
 class ChatMessage(BaseModel):
@@ -16,3 +17,16 @@ class ChatResponse(BaseModel):
   success: bool
   message: str
   data: Optional[ChatMessage]
+  
+class ChatRoomCreate(BaseModel):
+  title: str
+
+class ChatRoomResponse(BaseModel):
+  id: str
+  title: str
+  created_at: datetime  
+  
+  class Config:
+    json_encoders = {
+      datetime: lambda v: v.isoformat()  # datetime을 ISO 8601 형식으로 직렬화
+    }

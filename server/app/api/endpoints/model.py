@@ -35,6 +35,12 @@ async def model_download_cancel(request: ModelNameRequest):
   
   return await ModelService.model_download_cancel(request.model_name)
 
+## 모델 이름이 없는 경우
+@router.delete("/model/delete/")
+@handle_exceptions
+async def model_delete():  
+  return await JSONResponse(content=create_response(False, "모델이 존재하지 않습니다.", None), status_code=404)
+
 ## 모델 삭제
 @router.delete("/model/delete/{model_name}")
 @handle_exceptions

@@ -1,6 +1,7 @@
 import { type Config } from "tailwindcss";
 
 export default {
+  mode: "jit", // calc 사용
   darkMode: "class", // HTML에 "dark" 클래스를 추가하면 다크 모드 적용됨
   content: ["./pages/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}", "./app/**/*.{ts,tsx}", "./src/**/*.{ts,tsx}"],
   theme: {

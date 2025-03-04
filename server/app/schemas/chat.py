@@ -24,9 +24,16 @@ class ChatRoomCreate(BaseModel):
 class ChatRoomResponse(BaseModel):
   id: str
   title: str
-  created_at: datetime  
+  created_at: datetime
   
-  class Config:
-    json_encoders = {
-      datetime: lambda v: v.isoformat()  # datetime을 ISO 8601 형식으로 직렬화
-    }
+  model_config = {
+    "from_attributes": True
+  }
+  
+  def model_dump(self, **kwargs):
+    dump = super().model_dump(**kwargs)
+    dump['created_at'] = self.created_at.isoformat()
+    return dump
+
+class ChatRoomList(BaseModel):
+    chat_rooms: List[ChatRoomResponse]

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { startTransition, useActionState, useRef } from "react";
+import React, { startTransition, useActionState, useEffect, useRef } from "react";
 import { EditorView } from "prosemirror-view";
 import { Button } from "@/components/ui/button";
 import TiptapEditor, { TiptapEditorRef } from "@/components/editor/TiptapEditor";
@@ -8,13 +8,14 @@ import { getFormattedContent } from "@/utils/editorUtils";
 import { useModelStore } from "@/stores/useModelStore";
 import { sendMessageAction } from "@/app/(layout)/(home)/actions/sendMessageAction";
 import { Send } from "lucide-react";
+import { toast } from "react-toastify";
 
 const ChatInputContainer = () => {
   const editorRef = useRef<TiptapEditorRef>(null);
   const formRef = useRef<HTMLFormElement>(null);
   const { selectedModel } = useModelStore();
 
-  const [, formAction, isPending] = useActionState(sendMessageAction, null);
+  const [actionState, formAction, isPending] = useActionState(sendMessageAction, null);
 
   const handleSubmit = (e?: React.FormEvent<HTMLFormElement>, source?: EditorView) => {
     if (e) e.preventDefault();
@@ -40,15 +41,20 @@ const ChatInputContainer = () => {
     }
   };
 
+  useEffect(() => {
+    if (actionState && !actionState.ok) {
+      toast.error(actionState.message || "메시지 전송에 실패했습니다");
+    }
+  }, [actionState]);
+
   // form 클릭 시 에디터에 포커스
   const handleContainerClick = () => {
     if (editorRef.current) {
       editorRef.current.focus();
     }
   };
-
   return (
-    <section className="mx-auto mb-8 w-full max-w-3xl cursor-text px-4">
+    <section className="mx-auto w-full cursor-text px-3 md:max-w-3xl md:px-5 lg:px-4 xl:px-5">
       <form
         ref={formRef}
         onSubmit={(e) => handleSubmit(e)}

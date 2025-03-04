@@ -5,10 +5,7 @@ export default async function deleteModel(model_name: string) {
   const response = await customFetch(
     `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/model/delete/${model_name}`,
     undefined,
-    {
-      method: "DELETE",
-      isToast: true,
-    },
+    { method: "DELETE" },
   );
 
   if (response.ok === true) {

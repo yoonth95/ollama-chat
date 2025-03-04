@@ -3,11 +3,18 @@
 import { Button } from "@/components/ui/button";
 import { deleteModel } from "@/components/layout/header/services";
 import { Trash2 } from "lucide-react";
+import { toast } from "react-toastify";
 
 const DeleteModelButton = ({ model }: { model: string }) => {
   const handleModelDelete = async (e: React.MouseEvent, model_name: string) => {
     e.stopPropagation();
-    await deleteModel(model_name);
+    const { ok, message } = await deleteModel(model_name);
+
+    if (ok) {
+      toast.success(message);
+    } else {
+      toast.error(message);
+    }
   };
 
   return (

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { ThemeToggle } from "@/components/common/ThemeToggle";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -33,7 +34,7 @@ const Header = ({ initialModels, initialError }: HeaderProps) => {
     setInputValue(e.target.value);
   };
   return (
-    <header>
+    <header className="flex justify-between px-4">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
@@ -64,6 +65,7 @@ const Header = ({ initialModels, initialError }: HeaderProps) => {
           )}
         </DropdownMenuContent>
       </DropdownMenu>
+      <ThemeToggle />
     </header>
   );
 };

@@ -15,9 +15,9 @@ export default async function MainLayout({
   return (
     <div className="flex h-screen bg-background">
       <Sidebar />
-      <div className="flex flex-1 flex-col p-4">
+      <div className="flex flex-1 flex-col py-4">
         <Header initialModels={responseData} initialError={responseError} />
-        <main className="flex flex-1 flex-col items-center justify-center">{children}</main>
+        <main className="flex flex-1 flex-col items-center justify-center overflow-hidden">{children}</main>
         <Footer />
       </div>
     </div>

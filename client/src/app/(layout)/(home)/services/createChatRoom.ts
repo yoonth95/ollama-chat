@@ -1,5 +1,5 @@
 import { customFetch } from "@/lib/customFetch";
-import { ChatRoomSchema, ChatRoomType, CreateChatRoomRequestType } from "@/app/(layout)/(home)/types/ChatRoomType";
+import { ChatRoomSchema, ChatRoomType, CreateChatRoomRequestType } from "@/types/chatRoomType";
 
 export default async function createChatRoom(chatData: { message: string; model: string }) {
   return customFetch<ChatRoomType, CreateChatRoomRequestType>(

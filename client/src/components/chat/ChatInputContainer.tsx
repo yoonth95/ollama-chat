@@ -11,7 +11,7 @@ import { useModelStore } from "@/stores/useModelStore";
 import { sendMessageAction } from "@/app/(layout)/(home)/actions/sendMessageAction";
 import { LoaderCircle, Send } from "lucide-react";
 
-const ChatInputContainer = () => {
+const ChatInputContainer = ({ chatRoomId }: { chatRoomId?: string }) => {
   const router = useRouter();
   const editorRef = useRef<TiptapEditorRef>(null);
   const formRef = useRef<HTMLFormElement>(null);
@@ -27,12 +27,13 @@ const ChatInputContainer = () => {
         ? getFormattedContent(selectedModel, source)
         : getFormattedContent(selectedModel, editorRef);
 
-      const model = selectedModel;
+      const model = selectedModel?.model;
 
-      if (content) {
+      if (content && model) {
         const formData = e ? new FormData(e.currentTarget) : new FormData();
         formData.set("message", content);
-        formData.set("model", model?.model as string);
+        formData.set("model", model);
+        formData.set("roomId", chatRoomId || "");
 
         startTransition(() => {
           formAction(formData);

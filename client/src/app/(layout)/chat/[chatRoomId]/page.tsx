@@ -1,7 +1,6 @@
-import { getChatRoomMessage } from "@/app/(layout)/chat/[chatRoomId]/actions/getChatRoomMessageAction";
 import ChatInputContainer from "@/components/chat/ChatInputContainer";
-import UserChatBox from "./components/UserChatBox";
-import BotChatBox from "./components/BotChatBox";
+import { UserChatBox, BotChatBox } from "@/app/(layout)/chat/[chatRoomId]/components";
+import { getChatRoomMessage } from "@/app/(layout)/chat/[chatRoomId]/actions/getChatRoomMessageAction";
 
 export default async function Page({ params }: { params: Promise<{ chatRoomId: string }> }) {
   const { chatRoomId } = await params;
@@ -14,7 +13,7 @@ export default async function Page({ params }: { params: Promise<{ chatRoomId: s
         <UserChatBox />
         <BotChatBox />
       </section>
-      <ChatInputContainer />
+      <ChatInputContainer chatRoomId={chatRoomId} />
     </div>
   );
 }

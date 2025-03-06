@@ -3,8 +3,9 @@ import ChatInputContainer from "@/components/chat/ChatInputContainer";
 
 export default function HomePage() {
   return (
-    <ChatLayout>
+    <div className="flex h-full w-full flex-col items-center justify-center">
+      <ChatLayout />
       <ChatInputContainer />
-    </ChatLayout>
+    </div>
   );
 }

@@ -1,28 +1,29 @@
+"use client";
+
 import { UserChatBox, BotChatBox } from "@/app/(layout)/chat/[chatRoomId]/components";
 import { ModelText } from "@/app/(layout)/(home)/components";
+import { useSendMessageStore } from "@/stores/useSendMesaage";
 
-const ChatLayout = ({ children }: { children: React.ReactNode }) => {
-  // 전역 상태로 체크
+const ChatLayout = () => {
+  const { isSendMessage, chatMessage } = useSendMessageStore();
 
-  const ok = true;
+  const content = chatMessage?.content ?? "";
 
   return (
-    <div className="flex h-full w-full flex-col">
-      {ok ? (
+    <>
+      {isSendMessage ? (
         <>
-          <section className="flex w-full flex-1 flex-col items-center justify-start overflow-y-auto">
-            <UserChatBox />
+          <section className="flex w-full flex-1 flex-col items-end justify-start overflow-y-auto md:px-5 lg:px-4 xl:px-5">
+            <UserChatBox content={content} />
             <BotChatBox />
           </section>
-          {children}
         </>
       ) : (
-        <div className="flex h-full w-full flex-col items-center justify-center gap-6">
+        <section className="mb-6">
           <ModelText />
-          {children}
-        </div>
+        </section>
       )}
-    </div>
+    </>
   );
 };
 

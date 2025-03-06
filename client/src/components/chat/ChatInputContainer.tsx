@@ -1,21 +1,23 @@
 "use client";
 
 import React, { startTransition, useActionState, useEffect, useRef } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { EditorView } from "prosemirror-view";
 import { toast } from "react-toastify";
 import { Button } from "@/components/ui/button";
 import TiptapEditor, { TiptapEditorRef } from "@/components/editor/TiptapEditor";
 import { getFormattedContent } from "@/utils/editorUtils";
 import { useModelStore } from "@/stores/useModelStore";
+import { useSendMessageStore } from "@/stores/useSendMesaage";
 import { sendMessageAction } from "@/app/(layout)/(home)/actions/sendMessageAction";
 import { LoaderCircle, Send } from "lucide-react";
 
-const ChatInputContainer = ({ chatRoomId }: { chatRoomId?: string }) => {
+const ChatInputContainer = ({ chatRoomId = "" }: { chatRoomId?: string }) => {
   const router = useRouter();
   const editorRef = useRef<TiptapEditorRef>(null);
   const formRef = useRef<HTMLFormElement>(null);
   const { selectedModel } = useModelStore();
+  const { setIsSendMessage, setChatMessage } = useSendMessageStore();
 
   const [actionState, formAction, isPending] = useActionState(sendMessageAction, null);
 
@@ -35,6 +37,15 @@ const ChatInputContainer = ({ chatRoomId }: { chatRoomId?: string }) => {
         formData.set("model", model);
         formData.set("roomId", chatRoomId || "");
 
+        // 메인 페이지 UI 변경
+        if (chatRoomId === "") {
+          setIsSendMessage(true);
+          setChatMessage({
+            role: "user",
+            content,
+          });
+        }
+
         startTransition(() => {
           formAction(formData);
         });
@@ -52,10 +63,13 @@ const ChatInputContainer = ({ chatRoomId }: { chatRoomId?: string }) => {
   };
 
   useEffect(() => {
+    if (chatRoomId !== "") setIsSendMessage(false);
+
     if (actionState) {
       const { ok, data, message } = actionState;
       if (!ok) toast.error(message || "메시지 전송에 실패했습니다");
       if (ok && data) {
+        setIsSendMessage(true);
         router.push(`/chat/${data.id}`);
       }
     }

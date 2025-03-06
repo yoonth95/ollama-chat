@@ -9,8 +9,8 @@ export default async function Page({ params }: { params: Promise<{ chatRoomId: s
 
   return (
     <div className="flex h-full w-full flex-col">
-      <section className="flex w-full flex-1 flex-col items-center justify-start overflow-y-auto">
-        <UserChatBox />
+      <section className="flex w-full flex-1 flex-col items-end justify-start overflow-y-auto md:px-5 lg:px-4 xl:px-5">
+        <UserChatBox content={message} />
         <BotChatBox />
       </section>
       <ChatInputContainer chatRoomId={chatRoomId} />

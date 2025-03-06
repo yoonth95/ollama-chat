@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import { deleteChatRoom } from "@/components/layout/sidebar/services";
 import { DropdownMenuItem, DropdownMenuContent } from "@/components/ui/dropdown-menu";
@@ -15,12 +15,16 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { Pencil, Trash2 } from "lucide-react";
 import { revalidateTagAction } from "@/actions/revalidateTagAction";
+import { Pencil, Trash2 } from "lucide-react";
 
 const ChatRoomMenu = ({ roomId }: { roomId: string }) => {
   const router = useRouter();
+  const pathname = usePathname();
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+
+  const isNowChatRoom = pathname === "/chat/" + roomId;
+  const alertMessage = isNowChatRoom ? "현재 채팅방이 삭제되고 메인페이지로 이동합니다." : "해당 채팅방이 삭제됩니다.";
 
   // 채팅방 삭제
   const handleDelete = async () => {
@@ -28,7 +32,7 @@ const ChatRoomMenu = ({ roomId }: { roomId: string }) => {
     if (ok) {
       toast.success(message);
       revalidateTagAction("rooms");
-      router.replace("/");
+      isNowChatRoom && router.replace("/");
     } else {
       toast.error(message);
     }
@@ -62,10 +66,10 @@ const ChatRoomMenu = ({ roomId }: { roomId: string }) => {
 
       {/* Alert 부분 */}
       <AlertDialog open={showConfirmDialog} onOpenChange={setShowConfirmDialog}>
-        <AlertDialogContent className="dark:bg-neutral-700/60">
+        <AlertDialogContent className="dark:bg-neutral-700">
           <AlertDialogHeader>
             <AlertDialogTitle>채팅을 삭제하시겠습니까?</AlertDialogTitle>
-            <AlertDialogDescription>채팅방이 삭제되고 메인페이지로 이동합니다.</AlertDialogDescription>
+            <AlertDialogDescription>{alertMessage}</AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter className="gap-1">
             <AlertDialogCancel className="rounded-3xl border dark:border-neutral-700 dark:bg-transparent dark:hover:bg-neutral-700/70">

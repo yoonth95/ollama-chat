@@ -1,18 +1,15 @@
 import ChatInputContainer from "@/components/chat/ChatInputContainer";
-import { UserChatBox, BotChatBox } from "@/app/(layout)/chat/[chatRoomId]/components";
-import { getChatRoomMessage } from "@/app/(layout)/chat/[chatRoomId]/actions/getChatRoomMessageAction";
+import { Suspense } from "react";
+import ChatMessages from "./components/ChatMessages";
 
 export default async function Page({ params }: { params: Promise<{ chatRoomId: string }> }) {
   const { chatRoomId } = await params;
-  const message = await getChatRoomMessage(chatRoomId);
-  console.log(message);
 
   return (
     <div className="flex h-full w-full flex-col">
-      <section className="flex w-full flex-1 flex-col items-end justify-start overflow-y-auto">
-        <UserChatBox content={message} />
-        <BotChatBox />
-      </section>
+      <Suspense fallback={<div>메시지 로딩 중...</div>}>
+        <ChatMessages chatRoomId={chatRoomId} />
+      </Suspense>
       <ChatInputContainer chatRoomId={chatRoomId} />
     </div>
   );

@@ -29,7 +29,7 @@ const ChatRoom = ({ title, chats }: { title: string; chats: ChatRoomType[] }) =>
             <li
               key={chat.id}
               className={cn(
-                `group relative flex w-[210px] justify-between rounded-md transition-colors ${isActive ? "bg-neutral-700/50" : ""}`,
+                `group relative flex w-full justify-between rounded-md transition-colors ${isActive ? "bg-neutral-700/50" : ""}`,
                 "dark:hover:bg-neutral-700/50",
               )}
               onMouseEnter={() => setHoveredRoom(chat.id)}

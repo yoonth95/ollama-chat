@@ -8,13 +8,22 @@ import { fetchTimeout } from "@/utils/fetchTimeoutUtil";
 export const sendMessageAction = async (_prevState: unknown, queryData: FormData) => {
   const text = queryData.get("message") as string;
   const model = queryData.get("model") as string;
+  const roomId = queryData.get("roomId") as string;
 
-  const response = await fetchTimeout(createChatRoom({ message: text, model }), 1000);
-  const { ok, data, message, status } = response;
+  // 새 채팅 시작
+  if (roomId === "") {
+    // 채팅방 생성 API
+    const response = await fetchTimeout(createChatRoom({ message: text, model }), 1000);
+    const { ok, data, message, status } = response;
 
-  if (ok && data) {
-    const cookiesStore = await cookies();
-    cookiesStore.set(`chat_${data.id}`, encodeURIComponent(text), { maxAge: 60 });
+    if (ok && data) {
+      const cookiesStore = await cookies();
+      cookiesStore.set(`chat_${data.id}`, encodeURIComponent(text), { maxAge: 60 });
+    }
+    return { ok, data, message, status };
   }
-  return { ok, data, message, status };
+
+  // 질문 전송 API
+  else {
+  }
 };

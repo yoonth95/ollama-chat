@@ -8,14 +8,16 @@ import { Button } from "@/components/ui/button";
 import TiptapEditor, { TiptapEditorRef } from "@/components/editor/TiptapEditor";
 import { getFormattedContent } from "@/utils/editorUtils";
 import { useModelStore } from "@/stores/useModelStore";
+import { useSendMessageStore } from "@/stores/useSendMesaage";
 import { sendMessageAction } from "@/app/(layout)/(home)/actions/sendMessageAction";
 import { LoaderCircle, Send } from "lucide-react";
 
-const ChatInputContainer = () => {
+const ChatInputContainer = ({ chatRoomId = "" }: { chatRoomId?: string }) => {
   const router = useRouter();
   const editorRef = useRef<TiptapEditorRef>(null);
   const formRef = useRef<HTMLFormElement>(null);
   const { selectedModel } = useModelStore();
+  const { setIsSendMessage, setChatMessage } = useSendMessageStore();
 
   const [actionState, formAction, isPending] = useActionState(sendMessageAction, null);
 
@@ -27,12 +29,22 @@ const ChatInputContainer = () => {
         ? getFormattedContent(selectedModel, source)
         : getFormattedContent(selectedModel, editorRef);
 
-      const model = selectedModel;
+      const model = selectedModel?.model;
 
-      if (content) {
+      if (content && model) {
         const formData = e ? new FormData(e.currentTarget) : new FormData();
         formData.set("message", content);
-        formData.set("model", model?.model as string);
+        formData.set("model", model);
+        formData.set("roomId", chatRoomId || "");
+
+        // 메인 페이지 UI 변경
+        if (chatRoomId === "") {
+          setIsSendMessage(true);
+          setChatMessage({
+            role: "user",
+            content,
+          });
+        }
 
         startTransition(() => {
           formAction(formData);
@@ -51,17 +63,20 @@ const ChatInputContainer = () => {
   };
 
   useEffect(() => {
+    if (chatRoomId !== "") setIsSendMessage(false);
+
     if (actionState) {
       const { ok, data, message } = actionState;
       if (!ok) toast.error(message || "메시지 전송에 실패했습니다");
       if (ok && data) {
+        setIsSendMessage(true);
         router.push(`/chat/${data.id}`);
       }
     }
-  }, [actionState, router]);
+  }, [actionState, router, chatRoomId, setIsSendMessage]);
 
   return (
-    <section className="mx-auto w-full cursor-text px-3 md:max-w-3xl md:px-5 lg:px-4 xl:px-5">
+    <section className="mx-auto flex w-full gap-4 text-base md:max-w-[40rem] md:gap-5 lg:gap-6 xl:max-w-[48rem]">
       <form
         ref={formRef}
         onSubmit={(e) => handleSubmit(e)}
@@ -75,7 +90,7 @@ const ChatInputContainer = () => {
           placeholder="무엇이든 물어보세요"
           onSubmit={(source: EditorView) => handleSubmit(undefined, source)}
         />
-        <div className="flex items-center justify-end px-3 py-3">
+        <div className="flex w-full items-center justify-end px-3 py-3">
           {isPending ? (
             <span className="pointer-events-none flex h-8 w-8 items-center justify-center rounded-full bg-primary opacity-50 dark:bg-foreground dark:text-primary">
               <LoaderCircle className="h-5 w-5 animate-spin" />

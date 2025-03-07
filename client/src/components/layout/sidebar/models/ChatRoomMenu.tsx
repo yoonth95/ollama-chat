@@ -32,7 +32,7 @@ const ChatRoomMenu = ({ roomId }: { roomId: string }) => {
     if (ok) {
       toast.success(message);
       revalidateTagAction("rooms");
-      isNowChatRoom && router.replace("/");
+      if (isNowChatRoom) router.replace("/");
     } else {
       toast.error(message);
     }

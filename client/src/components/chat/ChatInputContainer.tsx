@@ -1,7 +1,7 @@
 "use client";
 
 import React, { startTransition, useActionState, useEffect, useRef } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { EditorView } from "prosemirror-view";
 import { toast } from "react-toastify";
 import { Button } from "@/components/ui/button";
@@ -73,10 +73,10 @@ const ChatInputContainer = ({ chatRoomId = "" }: { chatRoomId?: string }) => {
         router.push(`/chat/${data.id}`);
       }
     }
-  }, [actionState, router]);
+  }, [actionState, router, chatRoomId, setIsSendMessage]);
 
   return (
-    <section className="mx-auto w-full cursor-text px-3 md:max-w-3xl md:px-5 lg:px-4 xl:px-5">
+    <section className="mx-auto flex w-full gap-4 text-base md:max-w-[40rem] md:gap-5 lg:gap-6 xl:max-w-[48rem]">
       <form
         ref={formRef}
         onSubmit={(e) => handleSubmit(e)}
@@ -90,7 +90,7 @@ const ChatInputContainer = ({ chatRoomId = "" }: { chatRoomId?: string }) => {
           placeholder="무엇이든 물어보세요"
           onSubmit={(source: EditorView) => handleSubmit(undefined, source)}
         />
-        <div className="flex items-center justify-end px-3 py-3">
+        <div className="flex w-full items-center justify-end px-3 py-3">
           {isPending ? (
             <span className="pointer-events-none flex h-8 w-8 items-center justify-center rounded-full bg-primary opacity-50 dark:bg-foreground dark:text-primary">
               <LoaderCircle className="h-5 w-5 animate-spin" />

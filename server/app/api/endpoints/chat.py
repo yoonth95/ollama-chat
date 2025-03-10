@@ -33,10 +33,10 @@ async def create_new_chat(request: ChatRequest, db: Session = Depends(get_db)):
 ## 채팅방 전체 조회
 @router.get("/chat/get-rooms")
 @handle_exceptions
-async def get_chat_rooms(db: Session = Depends(get_db)):
+async def get_chat_rooms(page: int = 1, limit: int = 20, db: Session = Depends(get_db)):
   logger.info(f"📩 클라이언트 채팅방 리스트 조회")
   
-  response = await ChatService.get_chat_rooms_service(db)
+  response = await ChatService.get_chat_rooms_service(db, page, limit)
 
   return JSONResponse(content=create_response(True, "채팅방 전체 조회", response), status_code=200)
 

@@ -25,6 +25,7 @@ export default function AddModelButton({ inputValue, setInputValue }: AddModelBu
       {!isPending ? (
         <Button
           variant="ghost"
+          aria-label="model-download"
           onClick={handleDownload}
           disabled={isPending}
           className="w-full justify-start px-3 py-2 text-foreground dark:hover:bg-neutral-700/50"

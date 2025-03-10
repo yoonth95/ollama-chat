@@ -24,6 +24,7 @@ const SubMenuItem = ({ model }: SubMenuItemButtonProps) => {
     <div className="flex items-center justify-between px-1">
       <Button
         variant="ghost"
+        aria-label="download-model"
         disabled={isPending}
         onClick={handleDownload}
         className="text-foregroun focus:text-foregroun flex h-[55px] cursor-pointer items-center justify-between gap-3 dark:hover:bg-neutral-700/50"

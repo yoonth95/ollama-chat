@@ -42,10 +42,20 @@ const Header = ({ initialModels, initialError }: HeaderProps) => {
       <div className="flex items-center gap-3">
         {!isOpen && (
           <div className="flex items-center justify-between">
-            <Button variant="icon" className="h-8 w-8 text-secondary-foreground" onClick={toggleSidebar}>
+            <Button
+              variant="icon"
+              aria-label="on-off-sidebar"
+              className="h-8 w-8 text-secondary-foreground"
+              onClick={toggleSidebar}
+            >
               <PanelRightClose className="!h-5 !w-5" />
             </Button>
-            <Button variant="icon" className="h-8 w-8 text-secondary-foreground" onClick={() => router.push("/")}>
+            <Button
+              variant="icon"
+              aria-label="new-post"
+              className="h-8 w-8 text-secondary-foreground"
+              onClick={() => router.push("/")}
+            >
               <SquarePen className="!h-5 !w-5" />
             </Button>
           </div>
@@ -54,6 +64,7 @@ const Header = ({ initialModels, initialError }: HeaderProps) => {
           <DropdownMenuTrigger asChild>
             <Button
               variant="ghost"
+              aria-label="dropdown"
               className="h-fit p-0 text-lg text-foreground dark:ring-offset-background dark:hover:bg-background dark:focus-visible:ring-0 dark:focus-visible:ring-transparent"
             >
               <span className="font-medium">{selectedModel?.model || "모델 선택"}</span>

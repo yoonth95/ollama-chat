@@ -14,7 +14,7 @@ const Sidebar = () => {
   return isMobile ? (
     <Sheet open={isOpen} onOpenChange={toggleSidebar}>
       <SheetTrigger asChild>
-        <Button variant="icon" className="fixed left-4 top-4 z-50">
+        <Button variant="icon" aria-label="on-off-sidebar" className="fixed left-4 top-4 z-50">
           <PanelRightOpen className="!h-5 !w-5" />
         </Button>
       </SheetTrigger>

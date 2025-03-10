@@ -57,6 +57,7 @@ const ChatRoom = ({ title, chats }: { title: string; chats: ChatRoomType[] }) =>
                 <DropdownMenuTrigger asChild>
                   <Button
                     variant="ghost"
+                    aria-label="sub-menu-button"
                     className={cn(
                       `absolute right-2 top-1/2 -translate-y-1/2 transform p-2 opacity-0 transition-opacity group-hover:opacity-100 dark:ring-offset-transparent dark:hover:bg-transparent dark:focus-visible:ring-0 dark:focus-visible:ring-transparent ${isActive ? "opacity-100" : ""}`,
                     )}

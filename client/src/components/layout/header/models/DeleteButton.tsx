@@ -20,6 +20,7 @@ const DeleteModelButton = ({ model }: { model: string }) => {
   return (
     <Button
       variant="ghost"
+      aria-label="delete-model"
       onClick={(e) => handleModelDelete(e, model)}
       className="h-4 w-4 rounded p-0 hover:bg-neutral-200 dark:hover:bg-transparent"
     >

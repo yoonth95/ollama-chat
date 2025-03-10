@@ -3,7 +3,6 @@ from sqlalchemy.orm import Session
 from typing import List
 from app.schemas.chat import ChatRoomResponse, ChatRoomCreate
 from app.db.crud.chat import ChatCrud
-from app.utils.datetime_utils import convert_to_kst
 
 class ChatService:
   @staticmethod
@@ -14,7 +13,7 @@ class ChatService:
     response = ChatRoomResponse(
       id=new_room.id,
       title=new_room.title,
-      created_at=convert_to_kst(new_room.created_at)
+      created_at=new_room.created_at
     )
     
     return json.loads(response.model_dump_json())

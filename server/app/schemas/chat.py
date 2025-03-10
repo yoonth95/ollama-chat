@@ -32,7 +32,8 @@ class ChatRoomResponse(BaseModel):
   
   def model_dump(self, **kwargs):
     dump = super().model_dump(**kwargs)
-    dump['created_at'] = self.created_at.isoformat()
+    if isinstance(self.created_at, datetime):
+      dump['created_at'] = self.created_at.isoformat()
     return dump
 
 class ChatRoomList(BaseModel):

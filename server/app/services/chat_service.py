@@ -20,8 +20,8 @@ class ChatService:
     return json.loads(response.model_dump_json())
   
   @staticmethod
-  async def get_chat_rooms_service(db: Session) -> List[dict]:
-    chat_rooms = ChatCrud.get_chat_rooms(db)
+  async def get_chat_rooms_service(db: Session, page: int, limit: int) -> List[dict]:
+    chat_rooms = ChatCrud.get_chat_rooms(db, page, limit)
     return [ChatRoomResponse.model_validate(room).model_dump() for room in chat_rooms]
   
   @staticmethod

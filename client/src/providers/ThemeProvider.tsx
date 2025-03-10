@@ -7,6 +7,6 @@ const NextThemesProvider = dynamic(() => import("next-themes").then((e) => e.The
   ssr: false,
 });
 
-export function ThemeProvider({ children, ...props }: React.ComponentProps<typeof NextThemesProvider>) {
+export default function ThemeProvider({ children, ...props }: React.ComponentProps<typeof NextThemesProvider>) {
   return <NextThemesProvider {...props}>{children}</NextThemesProvider>;
 }

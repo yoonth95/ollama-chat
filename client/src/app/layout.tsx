@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { pretendard } from "@/fonts";
-import { ThemeProvider } from "@/providers/ThemeProvider";
-import "./globals.css";
+import ThemeProvider from "@/providers/ThemeProvider";
 import ToastProvider from "@/providers/ToastProvider";
+import QueryProvider from "@/providers/QueryProvider";
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -18,9 +19,11 @@ export default async function RootLayout({
     <html lang="ko" className={pretendard.className} suppressHydrationWarning>
       <body className={`antialiased`}>
         <ToastProvider />
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          {children}
-        </ThemeProvider>
+        <QueryProvider>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+            {children}
+          </ThemeProvider>
+        </QueryProvider>
       </body>
     </html>
   );

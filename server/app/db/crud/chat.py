@@ -12,8 +12,15 @@ class ChatCrud:
     return new_room
 
   @staticmethod
-  def get_chat_rooms(db: Session):
-    return db.query(ChatRoom).order_by(ChatRoom.created_at.desc()).all()
+  def get_chat_rooms(db: Session, page: int, limit: int):
+    offset = (page - 1) * limit
+    return (
+      db.query(ChatRoom)
+      .order_by(ChatRoom.created_at.desc())
+      .offset(offset)
+      .limit(limit)
+      .all()
+    )
 
   @staticmethod
   def delete_chat_room(db: Session, room_id: str):

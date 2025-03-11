@@ -2,7 +2,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { getChatRooms } from "@/components/layout/sidebar/services";
 
 const useChatRooms = () => {
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useInfiniteQuery({
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
     queryKey: ["chatRooms"],
     queryFn: async ({ pageParam = 1 }) => {
       const response = await getChatRooms({ page: pageParam, limit: 20 });
@@ -14,17 +14,13 @@ const useChatRooms = () => {
     },
   });
 
-  const flatData = data?.pages.flatMap((page) => {
-    if (!page || !Array.isArray(page)) return [];
-    return page;
-  });
+  const flatData = data?.pages.flatMap((page) => (Array.isArray(page) ? page : []));
 
   return {
     data: flatData || [],
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-    isLoading,
   };
 };
 

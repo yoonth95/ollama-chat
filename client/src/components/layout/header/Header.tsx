@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ThemeToggle } from "@/components/common/ThemeToggle";
+import dynamic from "next/dynamic";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -22,6 +22,10 @@ interface HeaderProps {
   initialModels: ModelInfoType[];
   initialError?: ModelErrorType;
 }
+
+const ThemeToggle = dynamic(() => import("@/components/common/ThemeToggle").then((mod) => mod.ThemeToggle), {
+  ssr: false,
+});
 
 const Header = ({ initialModels, initialError }: HeaderProps) => {
   const router = useRouter();

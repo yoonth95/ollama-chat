@@ -1,7 +1,8 @@
+import { Suspense } from "react";
 import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
+import { Skeleton } from "@/components/ui/skeleton";
 import Sidebar from "@/components/layout/sidebar/Sidebar";
 import Header from "@/components/layout/header/Header";
-import Footer from "@/components/layout/footer/Footer";
 import { getModels } from "@/components/layout/header/services";
 import { getChatRooms } from "@/components/layout/sidebar/services";
 
@@ -10,13 +11,6 @@ export default async function MainLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const modelsResponse = await getModels().catch((error) => ({
-    data: [],
-    message: error.message || "Failed to fetch models",
-    ok: false,
-    status: 500,
-  }));
-
   const queryClient = new QueryClient();
   await queryClient.prefetchInfiniteQuery({
     queryKey: ["chatRooms"],
@@ -30,15 +24,27 @@ export default async function MainLayout({
         <Sidebar />
       </HydrationBoundary>
       <div className="flex flex-1 flex-col py-4">
-        <Header
-          initialModels={modelsResponse.data ?? []}
-          initialError={
-            !modelsResponse.ok ? { status: modelsResponse.status, message: modelsResponse.message } : undefined
-          }
-        />
+        <Suspense fallback={<Skeleton className="mx-4 mb-4 h-8 w-40 rounded-md" />}>
+          <HeaderSection />
+        </Suspense>
         <main className="flex flex-1 flex-col items-center justify-center overflow-hidden">{children}</main>
-        <Footer />
       </div>
     </div>
+  );
+}
+
+async function HeaderSection() {
+  const modelsResponse = await getModels().catch((error) => ({
+    data: [],
+    message: error.message || "Failed to fetch models",
+    ok: false,
+    status: 500,
+  }));
+
+  return (
+    <Header
+      initialModels={modelsResponse.data ?? []}
+      initialError={!modelsResponse.ok ? { status: modelsResponse.status, message: modelsResponse.message } : undefined}
+    />
   );
 }

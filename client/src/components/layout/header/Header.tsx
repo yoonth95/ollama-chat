@@ -1,69 +1,36 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import dynamic from "next/dynamic";
 import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import {
-  SearchBar,
-  InstalledModels,
-  DownloadableModels,
-  ErrorDisplay,
-  AddModelButton,
-} from "@/components/layout/header/models";
-import { useModelStore } from "@/stores/useModelStore";
+import { ErrorDisplay, SelectedModelDisplay, HeaderDropdownMenu } from "@/components/layout/header/models";
+import { SidebarActionButton } from "@/components/common";
 import { useSidebarStore } from "@/stores/useSidebarStore";
-import { ModelErrorType, ModelInfoType } from "@/types/modelType";
-import { ChevronDown, PanelRightClose, SquarePen } from "lucide-react";
+import { useModelSelectStore } from "@/stores/useModelSelectStore";
+import { useGetModels } from "@/components/layout/header/hooks/useGetModels";
+import { ChevronDown } from "lucide-react";
 
-interface HeaderProps {
-  initialModels: ModelInfoType[];
-  initialError?: ModelErrorType;
-}
-
-const ThemeToggle = dynamic(() => import("@/components/common/ThemeToggle").then((mod) => mod.ThemeToggle), {
+const ThemeToggle = dynamic(() => import("@/components/common").then((mod) => mod.ThemeToggle), {
   ssr: false,
 });
 
-const Header = ({ initialModels, initialError }: HeaderProps) => {
-  const router = useRouter();
-  const [inputValue, setInputValue] = useState("");
-  const { selectedModel, error, setModels, setError } = useModelStore();
-  const { isOpen, toggleSidebar } = useSidebarStore();
+const Header = () => {
+  const { selectedModel, setSelectedModel } = useModelSelectStore();
+  const isOpen = useSidebarStore((state) => state.isOpen);
+
+  const { models, error } = useGetModels();
 
   useEffect(() => {
-    setModels(initialModels);
-    setError(initialError);
-  }, [initialModels, initialError, setModels, setError]);
+    if (selectedModel && !models.some((m) => m.model === selectedModel.model)) {
+      setSelectedModel(null);
+    }
+  }, [models, selectedModel, setSelectedModel]);
 
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
-  };
   return (
-    <header className="flex justify-between px-4 pb-4">
+    <header className="flex justify-between p-4">
       <div className="flex items-center gap-3">
-        {!isOpen && (
-          <div className="flex items-center justify-between">
-            <Button
-              variant="icon"
-              aria-label="on-off-sidebar"
-              className="h-8 w-8 text-secondary-foreground"
-              onClick={toggleSidebar}
-            >
-              <PanelRightClose className="!h-5 !w-5" />
-            </Button>
-            <Button
-              variant="icon"
-              aria-label="new-post"
-              className="h-8 w-8 text-secondary-foreground"
-              onClick={() => router.push("/")}
-            >
-              <SquarePen className="!h-5 !w-5" />
-            </Button>
-          </div>
-        )}
+        {!isOpen && <SidebarActionButton />}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
@@ -71,28 +38,12 @@ const Header = ({ initialModels, initialError }: HeaderProps) => {
               aria-label="dropdown"
               className="h-fit p-0 text-lg text-foreground dark:ring-offset-background dark:hover:bg-background dark:focus-visible:ring-0 dark:focus-visible:ring-transparent"
             >
-              <span className="font-medium">{selectedModel?.model || "모델 선택"}</span>
+              <SelectedModelDisplay />
               <ChevronDown />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="min-w-[20rem] border border-border bg-accent p-0" align="start">
-            {error ? (
-              <ErrorDisplay error={error} />
-            ) : (
-              <>
-                <SearchBar value={inputValue} onChange={handleSearchChange} />
-                <ScrollArea className="my-2 px-3">
-                  {inputValue ? (
-                    <AddModelButton inputValue={inputValue} setInputValue={setInputValue} />
-                  ) : (
-                    <div className="grid gap-3">
-                      <InstalledModels />
-                      <DownloadableModels />
-                    </div>
-                  )}
-                </ScrollArea>
-              </>
-            )}
+            {error ? <ErrorDisplay error={error} /> : <HeaderDropdownMenu />}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

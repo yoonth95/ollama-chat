@@ -20,7 +20,7 @@ export default async function RootLayout({
       <body className={`antialiased`}>
         <ToastProvider />
         <QueryProvider>
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+          <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
             {children}
           </ThemeProvider>
         </QueryProvider>

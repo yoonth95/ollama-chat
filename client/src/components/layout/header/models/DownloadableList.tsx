@@ -2,7 +2,7 @@
 
 import { DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger } from "@/components/ui/dropdown-menu";
 import { SubMenuItem } from "@/components/layout/header/models";
-import { useModelStore } from "@/stores/useModelStore";
+import { useGetModels } from "@/components/layout/header/hooks/useGetModels";
 import { ModelInfoType } from "@/types/modelType";
 import modelData from "@/data/modelData.json";
 
@@ -10,8 +10,8 @@ interface ModelList {
   [key: string]: ModelInfoType[];
 }
 const DownloadableModels = () => {
-  const { models: availableModels = [] } = useModelStore();
-  const availableModelNames = availableModels.map((m) => m.model);
+  const { models } = useGetModels();
+  const availableModelNames = models.map((m) => m.model);
 
   // 다운로드 가능한 모델 필터링
   const filterModels = (): ModelList => {

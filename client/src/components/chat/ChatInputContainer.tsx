@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import { Button } from "@/components/ui/button";
 import TiptapEditor, { TiptapEditorRef } from "@/components/editor/TiptapEditor";
 import { getFormattedContent } from "@/utils/editorUtils";
-import { useModelStore } from "@/stores/useModelStore";
+import { useModelSelectStore } from "@/stores/useModelSelectStore";
 import { useSendMessageStore } from "@/stores/useSendMesaage";
 import { sendMessageAction } from "@/app/(layout)/(home)/actions/sendMessageAction";
 import { LoaderCircle, Send } from "lucide-react";
@@ -16,7 +16,8 @@ const ChatInputContainer = ({ chatRoomId = "" }: { chatRoomId?: string }) => {
   const router = useRouter();
   const editorRef = useRef<TiptapEditorRef>(null);
   const formRef = useRef<HTMLFormElement>(null);
-  const { selectedModel } = useModelStore();
+
+  const selectedModel = useModelSelectStore((state) => state.selectedModel);
   const { setIsSendMessage, setChatMessage } = useSendMessageStore();
 
   const [actionState, formAction, isPending] = useActionState(sendMessageAction, null);

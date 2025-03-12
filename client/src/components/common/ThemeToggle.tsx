@@ -1,10 +1,10 @@
 "use client";
 
-import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import { Switch } from "@/components/ui/switch";
+import { Moon, Sun } from "lucide-react";
 
-export function ThemeToggle() {
+const ThemeToggle = () => {
   const { theme, setTheme } = useTheme();
 
   const toggleTheme = () => {
@@ -31,4 +31,6 @@ export function ThemeToggle() {
       />
     </div>
   );
-}
+};
+
+export default ThemeToggle;

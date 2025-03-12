@@ -6,6 +6,8 @@ import ErrorDisplay from "./ErrorDisplay";
 import CancelModelButton from "./CancelButton";
 import DeleteModelButton from "./DeleteButton";
 import SubMenuItem from "./SubMenuItem";
+import SelectedModelDisplay from "./SelectedModelDisplay";
+import HeaderDropdownMenu from "./HeaderDropdownMenu";
 
 export {
   AddModelButton,
@@ -16,4 +18,6 @@ export {
   CancelModelButton,
   SubMenuItem,
   DeleteModelButton,
+  SelectedModelDisplay,
+  HeaderDropdownMenu,
 };

@@ -1,5 +1,7 @@
 "use client";
 
+import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toastify";
 import { Button } from "@/components/ui/button";
 import { CancelModelButton } from "@/components/layout/header/models";
 import { useModelDownload } from "@/components/layout/header/hooks/useModelDownload";
@@ -11,13 +13,28 @@ interface SubMenuItemButtonProps {
   model: ModelInfoType;
 }
 const SubMenuItem = ({ model }: SubMenuItemButtonProps) => {
-  const { isPending, downloadProgress, startDownload, updateProgress, finishOrCancelDownload } = useModelDownload(
-    model.model,
-  );
+  const modelName = model.model;
+  const queryClient = useQueryClient();
+
+  const { isPending, downloadProgress, startDownload, updateProgress, finishOrCancelDownload } =
+    useModelDownload(modelName);
 
   const handleDownload = async () => {
     startDownload();
-    await downloadModel(model.model, updateProgress, finishOrCancelDownload);
+    try {
+      const { ok, message, detail } = await downloadModel({ modelName, updateProgress });
+
+      if (detail !== "cancel") {
+        if (ok) {
+          queryClient.invalidateQueries({ queryKey: ["models"] });
+          toast.success(message);
+        } else {
+          toast.error(message);
+        }
+      }
+    } finally {
+      finishOrCancelDownload();
+    }
   };
 
   return (

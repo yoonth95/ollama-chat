@@ -1,16 +1,13 @@
-import { toast } from "react-toastify";
-import { revalidateTagAction } from "@/actions/revalidateTagAction";
 import { DigestWithProgressType } from "@/components/layout/header/stores/useModelDownloadStore";
 
-export default async function downloadModel(
-  model_name: string,
-  updateProgress: (progress: DigestWithProgressType) => void,
-  finishOrCancelDownload: (model_name: string) => void,
-  resetInput?: () => void,
-) {
+interface DownloadModelPropsType {
+  modelName: string;
+  updateProgress: (progress: DigestWithProgressType) => void;
+}
+const downloadModel = async ({ modelName, updateProgress }: DownloadModelPropsType) => {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/model/download?model_name=${encodeURIComponent(model_name)}`,
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/model/download?model_name=${encodeURIComponent(modelName)}`,
       {
         method: "GET",
         headers: { "Content-Type": "application/json" },
@@ -19,14 +16,13 @@ export default async function downloadModel(
 
     if (!response.ok) {
       const errorData = await response.json();
-      finishOrCancelDownload(model_name);
-      revalidateTagAction("models");
-      toast.error(errorData.message || "다운로드 요청 실패");
-      return;
+      return { ok: false, message: errorData.message || "다운로드 요청 실패" };
     }
 
     const reader = response.body?.getReader();
-    if (!reader) return;
+    if (!reader) {
+      return { ok: false, message: "서버 응답이 올바르지 않습니다." };
+    }
 
     const decoder = new TextDecoder();
     let buffer = "";
@@ -55,23 +51,26 @@ export default async function downloadModel(
             });
           }
 
+          if (status === "cancelled") {
+            return { ok: true, message: "모델 다운로드가 완료되었습니다.", detail: "cancel" };
+          }
+
           if (status === "success") {
-            finishOrCancelDownload(model_name);
-            await revalidateTagAction("models");
-            if (resetInput) resetInput();
-            toast.success("모델 다운로드가 완료되었습니다.");
+            return { ok: true, message: "모델 다운로드가 완료되었습니다." };
           }
         } catch (error) {
-          finishOrCancelDownload(model_name);
           const errorMessage = error instanceof Error ? error.message : "JSON 파싱 오류";
-          toast.error(errorMessage);
-          break;
+          return { ok: false, message: errorMessage };
         }
       }
     }
+
+    // 모든 데이터를 읽었지만 `success` 상태를 받지 못한 경우
+    console.log("여기333333333333333333333333333");
+    return { ok: false, message: "다운로드가 예상치 못한 상태로 종료되었습니다." };
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : "알 수 없는 오류가 발생했습니다.";
-    console.log(errorMessage);
-    finishOrCancelDownload(model_name);
+    return { ok: false, message: errorMessage };
   }
-}
+};
+export default downloadModel;

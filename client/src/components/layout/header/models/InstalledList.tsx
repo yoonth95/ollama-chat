@@ -3,11 +3,13 @@
 import React from "react";
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { DeleteModelButton } from "@/components/layout/header/models";
-import { useModelStore } from "@/stores/useModelStore";
+import { useModelSelectStore } from "@/stores/useModelSelectStore";
+import { useGetModels } from "@/components/layout/header/hooks/useGetModels";
 import { Check } from "lucide-react";
 
 const InstalledModels = () => {
-  const { models, selectedModel, setSelectedModel } = useModelStore();
+  const { selectedModel, setSelectedModel } = useModelSelectStore();
+  const { models } = useGetModels();
 
   const handleModelChange = (modelName: string) => {
     setSelectedModel(models.find((m) => m.model === modelName) || null);

@@ -6,7 +6,7 @@ from app.core.config import settings
 from app.schemas.model import ModelInfo, ModelList
 from app.utils.stream_model_download import stream_model_download
 from app.utils.response import create_response
-from app.utils.download_manager import active_downloads
+from app.utils.download_manager import active_downloads, cancelled_downloads
 
 class ModelService:
   @staticmethod
@@ -59,8 +59,7 @@ class ModelService:
   @staticmethod
   async def model_download_cancel(model_name: str):
     if model_name in active_downloads:
-      task = active_downloads.pop(model_name)
-      task.cancel()
+      cancelled_downloads[model_name] = True
       return JSONResponse(content=create_response(True, "다운로드 취소", None), status_code=200)
   
     return JSONResponse(content=create_response(False, "해당 모델이 다운로드가 되고 있지 않습니다.", None), status_code=404)

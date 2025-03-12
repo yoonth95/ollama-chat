@@ -3,7 +3,7 @@ import aiohttp
 import asyncio
 from typing import AsyncGenerator
 from app.core.config import settings
-from app.utils.download_manager import active_downloads
+from app.utils.download_manager import active_downloads, cancelled_downloads
 from app.utils.response import create_response
 
 async def stream_model_download(model_name: str) -> AsyncGenerator[str, None]:
@@ -26,10 +26,11 @@ async def stream_model_download(model_name: str) -> AsyncGenerator[str, None]:
       seen_digests = {}
 
       async for chunk in response.content:       
-        if model_name not in active_downloads:  # 다운로드 중단 감지
+        if cancelled_downloads.get(model_name, False):  
+          yield json.dumps(create_response(False, "다운로드 취소", {"model_name": model_name, "status": "cancelled"})) + "\n"
           del active_downloads[model_name]
-          yield json.dumps(create_response(False, "취소", {"model_name": model_name, "status": response.status})) + "\n"
-          return 
+          del cancelled_downloads[model_name]
+          return
                   
         try:
           log = json.loads(chunk.decode("utf-8"))

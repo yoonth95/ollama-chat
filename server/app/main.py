@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
 from app.db.database import init_db
 from app.api.endpoints import model
-from app.api.endpoints import chat
+from app.api.endpoints import room
 
 def create_app() -> FastAPI:
   app = FastAPI(
@@ -31,7 +31,7 @@ def configure_cors(app: FastAPI):
 def register_routers(app: FastAPI):
   """라우터 등록"""
   app.include_router(model.router, prefix=settings.API_V1_STR, tags=["model"])
-  app.include_router(chat.router, prefix=settings.API_V1_STR, tags=["chat"])
+  app.include_router(room.router, prefix=settings.API_V1_STR, tags=["room"])
 
 app = create_app()
 

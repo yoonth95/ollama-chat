@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Query
 from fastapi.responses import JSONResponse
 import logging
-from app.services.model_service import ModelService
+from app.services.model import ModelService
 from app.schemas.model import ModelNameRequest
 from app.utils.response import create_response
 from app.utils.handle_exceptions import handle_exceptions

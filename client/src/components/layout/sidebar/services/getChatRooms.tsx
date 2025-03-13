@@ -8,7 +8,7 @@ export type ChatRoomsParams = {
 
 export const getChatRooms = async ({ page = 1, limit = 20 }: ChatRoomsParams = {}) => {
   const response = await customFetch<ChatRoomType[]>(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/chat/get-rooms?page=${page}&limit=${limit}`,
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/room/get-rooms?page=${page}&limit=${limit}`,
     ChatRoomArraySchema,
     {
       cache: "no-store",

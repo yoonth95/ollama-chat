@@ -3,7 +3,7 @@ import { ChatRoomSchema, ChatRoomType, CreateChatRoomRequestType } from "@/types
 
 export default async function createChatRoom(chatData: { message: string; model: string }) {
   return customFetch<ChatRoomType, CreateChatRoomRequestType>(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/chat/create-room`,
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/room/create-room`,
     ChatRoomSchema,
     {
       method: "POST",

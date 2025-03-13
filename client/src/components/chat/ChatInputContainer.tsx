@@ -68,7 +68,11 @@ const ChatInputContainer = ({ chatRoomId = "" }: { chatRoomId?: string }) => {
 
     if (actionState) {
       const { ok, data, message } = actionState;
-      if (!ok) toast.error(message || "메시지 전송에 실패했습니다");
+      if (!ok) {
+        toast.error(message || "메시지 전송에 실패했습니다");
+        setIsSendMessage(false);
+        router.replace(`/`);
+      }
       if (ok && data) {
         setIsSendMessage(true);
         router.push(`/chat/${data.id}`);

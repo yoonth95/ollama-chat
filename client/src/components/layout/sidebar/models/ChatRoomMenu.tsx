@@ -18,7 +18,12 @@ import {
 import { revalidateTagAction } from "@/actions/revalidateTagAction";
 import { Pencil, Trash2 } from "lucide-react";
 
-const ChatRoomMenu = ({ roomId }: { roomId: string }) => {
+interface ChatRoomMenuProps {
+  roomId: string;
+  onRename: () => void;
+}
+
+const ChatRoomMenu = ({ roomId, onRename }: ChatRoomMenuProps) => {
   const router = useRouter();
   const pathname = usePathname();
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
@@ -39,9 +44,6 @@ const ChatRoomMenu = ({ roomId }: { roomId: string }) => {
     return;
   };
 
-  // 채팅방 이름 변경
-  const handleRename = () => {};
-
   return (
     <>
       <DropdownMenuContent
@@ -50,7 +52,9 @@ const ChatRoomMenu = ({ roomId }: { roomId: string }) => {
       >
         <DropdownMenuItem
           className="flex cursor-pointer items-center gap-3 rounded-md p-3 text-sm dark:hover:bg-neutral-700/60"
-          onClick={handleRename}
+          onClick={() => {
+            onRename();
+          }}
         >
           <Pencil />
           <span>이름 변경</span>

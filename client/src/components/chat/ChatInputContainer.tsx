@@ -81,7 +81,7 @@ const ChatInputContainer = ({ chatRoomId = "" }: { chatRoomId?: string }) => {
   }, [actionState, router, chatRoomId, setIsSendMessage]);
 
   return (
-    <section className="mx-auto flex w-full gap-4 text-base md:max-w-[40rem] md:gap-5 lg:gap-6 xl:max-w-[48rem]">
+    <section className="mx-auto mb-8 flex w-full gap-4 text-base md:max-w-[40rem] md:gap-5 lg:gap-6 xl:max-w-[48rem]">
       <form
         ref={formRef}
         onSubmit={(e) => handleSubmit(e)}

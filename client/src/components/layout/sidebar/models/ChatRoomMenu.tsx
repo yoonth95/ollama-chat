@@ -1,32 +1,25 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { toast } from "react-toastify";
-import { deleteChatRoom } from "@/components/layout/sidebar/services";
 import { DropdownMenuItem, DropdownMenuContent } from "@/components/ui/dropdown-menu";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+import { deleteChatRoom } from "@/components/layout/sidebar/services";
+import { ConfirmDialog, EditDialog } from "@/components/common";
 import { revalidateTagAction } from "@/actions/revalidateTagAction";
 import { Pencil, Trash2 } from "lucide-react";
 
 interface ChatRoomMenuProps {
   roomId: string;
-  onRename: () => void;
+  roomTitle: string;
+  setRoomTitle: Dispatch<SetStateAction<string>>;
 }
 
-const ChatRoomMenu = ({ roomId, onRename }: ChatRoomMenuProps) => {
+const ChatRoomMenu = ({ roomId, roomTitle, setRoomTitle }: ChatRoomMenuProps) => {
   const router = useRouter();
   const pathname = usePathname();
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+  const [showEditDialog, setShowEditDialog] = useState(false);
 
   const isNowChatRoom = pathname === "/chat/" + roomId;
   const alertMessage = isNowChatRoom ? "현재 채팅방이 삭제되고 메인페이지로 이동합니다." : "해당 채팅방이 삭제됩니다.";
@@ -44,6 +37,12 @@ const ChatRoomMenu = ({ roomId, onRename }: ChatRoomMenuProps) => {
     return;
   };
 
+  const handleRename = async (name: string) => {
+    console.log(name);
+    setRoomTitle(name);
+    setShowEditDialog(false);
+  };
+
   return (
     <>
       <DropdownMenuContent
@@ -52,9 +51,7 @@ const ChatRoomMenu = ({ roomId, onRename }: ChatRoomMenuProps) => {
       >
         <DropdownMenuItem
           className="flex cursor-pointer items-center gap-3 rounded-md p-3 text-sm dark:hover:bg-neutral-700/60"
-          onClick={() => {
-            onRename();
-          }}
+          onClick={() => setShowEditDialog(true)}
         >
           <Pencil />
           <span>이름 변경</span>
@@ -68,26 +65,25 @@ const ChatRoomMenu = ({ roomId, onRename }: ChatRoomMenuProps) => {
         </DropdownMenuItem>
       </DropdownMenuContent>
 
-      {/* Alert 부분 */}
-      <AlertDialog open={showConfirmDialog} onOpenChange={setShowConfirmDialog}>
-        <AlertDialogContent className="dark:bg-neutral-700">
-          <AlertDialogHeader>
-            <AlertDialogTitle>채팅을 삭제하시겠습니까?</AlertDialogTitle>
-            <AlertDialogDescription>{alertMessage}</AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter className="gap-1">
-            <AlertDialogCancel className="rounded-3xl border dark:border-neutral-700 dark:bg-transparent dark:hover:bg-neutral-700/70">
-              취소
-            </AlertDialogCancel>
-            <AlertDialogAction
-              className="rounded-3xl bg-red-500 text-white hover:bg-red-600 dark:bg-red-500 hover:dark:bg-red-600"
-              onClick={handleDelete}
-            >
-              삭제
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      {/* 삭제 Alert */}
+      <ConfirmDialog
+        title="채팅방을 삭제하시겠습니까?"
+        description={alertMessage}
+        open={showConfirmDialog}
+        onOpenChange={setShowConfirmDialog}
+        onConfirm={handleDelete}
+        confirmText="삭제"
+        confirmColor="bg-red-500 hover:bg-red-600 dark:bg-red-500 hover:dark:bg-red-600"
+      />
+
+      {/* 이름 변경 Alert */}
+      <EditDialog
+        title="채팅방 이름 변경"
+        open={showEditDialog}
+        inputValue={roomTitle}
+        onOpenChange={setShowEditDialog}
+        onConfirm={handleRename}
+      />
     </>
   );
 };

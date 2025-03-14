@@ -3,5 +3,6 @@ import ChatRoomMenu from "./ChatRoomMenu";
 import SidebarContent from "./SidebarContent";
 import ChatRoomSkeleton from "./ChatRoomSkeleton";
 import ChatRoomList from "./ChatRoomList";
+import ChatRoomItem from "./ChatRoomItem";
 
-export { ChatRoom, ChatRoomMenu, SidebarContent, ChatRoomSkeleton, ChatRoomList };
+export { ChatRoom, ChatRoomMenu, SidebarContent, ChatRoomSkeleton, ChatRoomList, ChatRoomItem };

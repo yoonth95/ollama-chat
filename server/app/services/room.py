@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from typing import List
 from app.schemas.room import RoomResponse, RoomCreate
 from app.db.crud.room import RoomCrud
+from app.schemas.room import RoomRenameRequest
 
 class RoomService:
   @staticmethod
@@ -27,3 +28,6 @@ class RoomService:
   async def delete_room_service(db: Session, room_id: str) -> bool:
     return RoomCrud.delete_room(db, room_id)
     
+  @staticmethod
+  async def update_room_title_service(db: Session, room_id: str, new_title: str) -> bool:
+    return RoomCrud.update_room_title(db, room_id, new_title)

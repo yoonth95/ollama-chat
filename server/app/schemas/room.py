@@ -28,5 +28,5 @@ class ChatRoomList(BaseModel):
   chat_rooms: List[RoomResponse]
     
 class RoomRenameRequest(BaseModel):
-  chat_id: str
+  room_id: str
   new_title: str

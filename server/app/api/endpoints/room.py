@@ -65,8 +65,11 @@ async def delete_room(room_id: str, db: Session = Depends(get_db)):
 async def update_room_title(request: RoomRenameRequest, db: Session = Depends(get_db)):
   logger.info(f"📩 클라이언트 채팅방 리스트 조회")
   
-  print(request.chat_id, request.new_title)
+  room_id = request.room_id
+  new_title = request.new_title
+  success = await RoomService.update_room_title_service(db, room_id, new_title)
   
-  # response = await RoomService.get_chat_rooms_service(db)
+  if not success:
+    return JSONResponse(content=create_response(False, "채팅방을 찾을 수 없습니다.", None), status_code=404)
 
-  return JSONResponse(content=create_response(True, "채팅방 이름 변경 성공", []), status_code=200)
+  return JSONResponse(content=create_response(True, "채팅방 이름 변경 성공", None), status_code=200)

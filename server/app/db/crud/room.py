@@ -30,3 +30,12 @@ class RoomCrud:
       db.commit()
       return True
     return False
+  
+  @staticmethod
+  def update_room_title(db: Session, room_id: str, new_title: str):
+    room = db.query(Room).filter(Room.id == room_id).first()
+    if room:
+      room.title = new_title
+      db.commit()
+      return True
+    return False

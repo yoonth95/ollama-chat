@@ -1,4 +1,3 @@
-import { revalidateTagAction } from "@/actions/revalidateTagAction";
 import { customFetch } from "@/lib/customFetch";
 
 const deleteChatRoom = async (room_id: string) => {
@@ -7,11 +6,6 @@ const deleteChatRoom = async (room_id: string) => {
     undefined,
     { method: "DELETE" },
   );
-
-  if (response.ok === true) {
-    await revalidateTagAction("rooms");
-  }
-
   return response;
 };
 

@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { KeyboardEventHandler, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 interface EditDialogProps {
   title: string;
@@ -23,18 +23,35 @@ export function EditDialog({
 }: EditDialogProps) {
   const [value, setValue] = useState(inputValue);
 
+  const handleConfirm = () => {
+    onConfirm(value);
+    onOpenChange(false);
+  };
+
+  const handleEnter: KeyboardEventHandler<HTMLInputElement> = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleConfirm();
+    }
+  };
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md" aria-describedby={undefined}>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
         </DialogHeader>
-        <Input value={value} className="dark:bg-accent" onChange={(e) => setValue(e.target.value)} />
+        <Input
+          value={value}
+          className="dark:bg-accent"
+          onChange={(e) => setValue(e.target.value)}
+          onKeyDown={handleEnter}
+        />
         <DialogFooter className="flex justify-end space-x-2">
           <Button
             type="button"
             className="rounded-3xl border dark:border-neutral-700 dark:bg-white dark:text-background dark:hover:bg-white/80"
-            onClick={() => onConfirm(value)}
+            onClick={handleConfirm}
           >
             {confirmText}
           </Button>

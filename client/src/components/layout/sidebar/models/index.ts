@@ -1,8 +1,8 @@
 import ChatRoom from "./ChatRoom";
-import ChatRoomMenu from "./ChatRoomMenu";
+import ChatRoomItemMenu from "./ChatRoomItemMenu";
 import SidebarContent from "./SidebarContent";
 import ChatRoomSkeleton from "./ChatRoomSkeleton";
 import ChatRoomList from "./ChatRoomList";
 import ChatRoomItem from "./ChatRoomItem";
 
-export { ChatRoom, ChatRoomMenu, SidebarContent, ChatRoomSkeleton, ChatRoomList, ChatRoomItem };
+export { ChatRoom, ChatRoomItemMenu, SidebarContent, ChatRoomSkeleton, ChatRoomList, ChatRoomItem };

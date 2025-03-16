@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { ChatRoomMenu } from "@/components/layout/sidebar/models";
+import { ChatRoomItemMenu } from "@/components/layout/sidebar/models";
 import { cn } from "@/lib/utils";
 import { MoreHorizontal } from "lucide-react";
 
@@ -65,7 +65,12 @@ const ChatRoomItem = ({ chat }: ChatRoomItemPropsType) => {
           </Button>
         </DropdownMenuTrigger>
 
-        <ChatRoomMenu roomId={chat.id} roomTitle={roomTitle} setRoomTitle={setRoomTitle} />
+        <ChatRoomItemMenu
+          roomId={chat.id}
+          roomTitle={roomTitle}
+          setRoomTitle={setRoomTitle}
+          setHoveredRoom={setHoveredRoom}
+        />
       </DropdownMenu>
     </li>
   );

@@ -2,22 +2,24 @@
 
 import React, { Dispatch, SetStateAction, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { DropdownMenuItem, DropdownMenuContent } from "@/components/ui/dropdown-menu";
-import { deleteChatRoom } from "@/components/layout/sidebar/services";
+import { deleteChatRoom, updateChatRoomTitle } from "@/components/layout/sidebar/services";
 import { ConfirmDialog, EditDialog } from "@/components/common";
-import { revalidateTagAction } from "@/actions/revalidateTagAction";
 import { Pencil, Trash2 } from "lucide-react";
 
-interface ChatRoomMenuProps {
+interface ChatRoomItemMenuProps {
   roomId: string;
   roomTitle: string;
   setRoomTitle: Dispatch<SetStateAction<string>>;
+  setHoveredRoom: Dispatch<SetStateAction<string | null>>;
 }
 
-const ChatRoomMenu = ({ roomId, roomTitle, setRoomTitle }: ChatRoomMenuProps) => {
+const ChatRoomItemMenu = ({ roomId, roomTitle, setRoomTitle, setHoveredRoom }: ChatRoomItemMenuProps) => {
   const router = useRouter();
   const pathname = usePathname();
+  const queryClient = useQueryClient();
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [showEditDialog, setShowEditDialog] = useState(false);
 
@@ -29,7 +31,7 @@ const ChatRoomMenu = ({ roomId, roomTitle, setRoomTitle }: ChatRoomMenuProps) =>
     const { ok, message } = await deleteChatRoom(roomId);
     if (ok) {
       toast.success(message);
-      revalidateTagAction("rooms");
+      queryClient.invalidateQueries({ queryKey: ["chatRooms"] });
       if (isNowChatRoom) router.replace("/");
     } else {
       toast.error(message);
@@ -37,10 +39,20 @@ const ChatRoomMenu = ({ roomId, roomTitle, setRoomTitle }: ChatRoomMenuProps) =>
     return;
   };
 
-  const handleRename = async (name: string) => {
-    console.log(name);
-    setRoomTitle(name);
-    setShowEditDialog(false);
+  // 채팅방 이름 변경
+  const handleRename = async (newTitle: string) => {
+    const oldTitle = roomTitle;
+
+    setRoomTitle(newTitle);
+    const { ok, message } = await updateChatRoomTitle(roomId, newTitle);
+    if (ok) {
+      toast.success(message);
+      queryClient.invalidateQueries({ queryKey: ["chatRooms"] });
+    } else {
+      setRoomTitle(oldTitle);
+      toast.error(message);
+    }
+    setHoveredRoom(null);
   };
 
   return (
@@ -88,4 +100,4 @@ const ChatRoomMenu = ({ roomId, roomTitle, setRoomTitle }: ChatRoomMenuProps) =>
   );
 };
 
-export default ChatRoomMenu;
+export default ChatRoomItemMenu;

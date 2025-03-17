@@ -1,12 +1,15 @@
-import React, { RefObject, useImperativeHandle } from "react";
-import { useEditor, EditorContent, ReactNodeViewRenderer, Editor } from "@tiptap/react";
+import { RefObject, useImperativeHandle } from "react";
+import { useEditor, EditorContent, ReactNodeViewRenderer } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import Code from "@tiptap/extension-code";
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
+import Typography from "@tiptap/extension-typography";
 import Placeholder from "@tiptap/extension-placeholder";
-import { EditorView } from "prosemirror-view";
+import Highlight from "@tiptap/extension-highlight";
+import { Markdown } from "tiptap-markdown";
 import { all, createLowlight } from "lowlight";
 import CodeBlockComponent from "@/components/editor/CodeBlockComponent";
+import { ShiftEnterExtension } from "@/utils/tiptapExtensionUtil";
+import "@/styles/editor.css";
 
 const lowlight = createLowlight(all);
 
@@ -14,26 +17,19 @@ export interface TiptapEditorRef {
   getText: () => string;
   clearContent: () => void;
   focus: () => void;
-  getEditor: () => Editor | null;
 }
 
 interface TiptapEditorProps {
   placeholder?: string;
-  onSubmit?: (source: EditorView) => void;
+  onSubmit?: (markdown: string) => void;
   editorRef?: RefObject<TiptapEditorRef | null>;
 }
 
-const TiptapEditor = ({ placeholder = "메시지를 입력하세요...", onSubmit, editorRef }: TiptapEditorProps) => {
+const TiptapEditor = ({ placeholder = "메시지를 입력하세요.", onSubmit, editorRef }: TiptapEditorProps) => {
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
         codeBlock: false,
-        code: false,
-      }),
-      Code.configure({
-        HTMLAttributes: {
-          class: "inline-code",
-        },
       }),
       CodeBlockLowlight.extend({
         addNodeView() {
@@ -44,52 +40,24 @@ const TiptapEditor = ({ placeholder = "메시지를 입력하세요...", onSubmi
         placeholder,
         emptyEditorClass: "is-editor-empty",
       }),
+      Highlight,
+      Typography,
+      Markdown,
+      ShiftEnterExtension,
     ],
-    content: "<textarea></textarea>",
+    content: "",
     editorProps: {
       attributes: {
         class: "focus:outline-none w-full px-4 py-3 max-h-52 overflow-y-auto",
       },
       handleDOMEvents: {
-        beforeinput: () => true,
-        keydown: (view, event) => {
-          // Shift+Enter는 줄바꿈 허용
-          if (event.key === "Enter" && event.shiftKey) return false;
-
-          // Enter는 줄바꿈 방지, 제출 (텍스트 내용 가져오기)
+        keydown: (_, event) => {
+          // Enter키 방지 및 마크다운 텍스트 가져오기
           if (event.key === "Enter" && !event.shiftKey) {
             event.preventDefault();
-            onSubmit?.(view);
+            const content = editor?.storage.markdown.getMarkdown();
 
-            return true;
-          }
-
-          return false;
-        },
-        paste: (view, event) => {
-          if (event.clipboardData) {
-            // HTML 형식과 텍스트 형식 모두 가져오기
-            const html = event.clipboardData.getData("text/html");
-            const text = event.clipboardData.getData("text/plain");
-
-            // 현재 위치가 code-block 내부인지 확인
-            const { from } = view.state.selection;
-            const parentNode = view.state.doc.resolve(from).parent;
-            const isInCodeBlock = parentNode.type.name === "codeBlock";
-
-            // HTML에 code-block이 포함되어 있는지 확인
-            const hasCodeBlock = html.includes("code-block") || html.includes("pre");
-
-            // 1. code-block 내부에 붙여넣기하는 경우 => 기본 동작 사용
-            if (isInCodeBlock) return false;
-
-            // 2. 복사한 내용에 code-block이 포함된 경우 => HTML 형식 유지하며 붙여넣기
-            if (hasCodeBlock) return false;
-
-            // 3. 그 외의 경우 => plain text만 붙여넣기
-            view.dispatch(view.state.tr.insertText(text, view.state.selection.from, view.state.selection.to));
-
-            event.preventDefault();
+            onSubmit?.(content);
             return true;
           }
           return false;
@@ -102,10 +70,9 @@ const TiptapEditor = ({ placeholder = "메시지를 입력하세요...", onSubmi
   useImperativeHandle(
     editorRef,
     () => ({
-      getText: () => editor?.getText() || "",
+      getText: () => editor?.storage.markdown.getMarkdown() || "",
       clearContent: () => editor?.commands.clearContent(),
-      focus: () => editor?.commands.focus("end"),
-      getEditor: () => editor,
+      focus: () => editor?.commands.focus(),
     }),
     [editor],
   );

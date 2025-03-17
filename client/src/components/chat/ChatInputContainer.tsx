@@ -2,11 +2,9 @@
 
 import React, { startTransition, useActionState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { EditorView } from "prosemirror-view";
 import { toast } from "react-toastify";
 import { Button } from "@/components/ui/button";
 import TiptapEditor, { TiptapEditorRef } from "@/components/editor/TiptapEditor";
-import { getFormattedContent } from "@/utils/editorUtils";
 import { useModelSelectStore } from "@/stores/useModelSelectStore";
 import { useSendMessageStore } from "@/stores/useSendMesaage";
 import { sendMessageAction } from "@/app/(layout)/(home)/actions/sendMessageAction";
@@ -22,17 +20,15 @@ const ChatInputContainer = ({ chatRoomId = "" }: { chatRoomId?: string }) => {
 
   const [actionState, formAction, isPending] = useActionState(sendMessageAction, null);
 
-  const handleSubmit = (e?: React.FormEvent<HTMLFormElement>, source?: EditorView) => {
+  // 메시지 전송
+  const handleSubmit = (e?: React.FormEvent<HTMLFormElement>, markdown?: string) => {
     if (e) e.preventDefault();
 
     if (!isPending) {
-      const content = source
-        ? getFormattedContent(selectedModel, source)
-        : getFormattedContent(selectedModel, editorRef);
-
+      const content = e ? editorRef.current?.getText() : markdown;
       const model = selectedModel?.model;
 
-      if (content && model) {
+      if (content?.trim() && model) {
         const formData = e ? new FormData(e.currentTarget) : new FormData();
         formData.set("message", content);
         formData.set("model", model);
@@ -86,14 +82,14 @@ const ChatInputContainer = ({ chatRoomId = "" }: { chatRoomId?: string }) => {
         ref={formRef}
         onSubmit={(e) => handleSubmit(e)}
         onClick={handleContainerClick}
-        className="flex w-full flex-col rounded-2xl border border-border/20 bg-background shadow-sm dark:bg-accent"
+        className="flex w-full cursor-text flex-col rounded-2xl border border-border/20 bg-background shadow-sm dark:bg-accent"
       >
         <input type="hidden" name="message" />
         <input type="hidden" name="model" />
         <TiptapEditor
           editorRef={editorRef}
           placeholder="무엇이든 물어보세요"
-          onSubmit={(source: EditorView) => handleSubmit(undefined, source)}
+          onSubmit={(markdown: string) => handleSubmit(undefined, markdown)}
         />
         <div className="flex w-full items-center justify-end px-3 py-3">
           {isPending ? (

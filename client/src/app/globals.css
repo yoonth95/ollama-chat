@@ -30,6 +30,9 @@
     --text-primary: 0 0% 98%;
     --text-secondary: 0 0% 63.9%;
     --placeholder: #adb5bd;
+    --code-block: #282c34;
+    --inline-code: #eb5757;
+    --hr: #3d251414;
   }
 
   .dark {
@@ -59,91 +62,93 @@
     --text-primary: 0 0% 98%;
     --text-secondary: 0 0% 63.9%;
     --placeholder: #adb5bd;
+    --code-block-bg: #282c34;
+    --inline-code-bg: #87837826;
+    --inline-code: #eb5757;
+    --hr: #444;
   }
   .tiptap {
-    p.is-editor-empty:first-child::before {
-      color: var(--placeholder);
-      content: attr(data-placeholder);
-      float: left;
-      height: 0;
-      pointer-events: none;
-    }
+    @apply relative;
 
-    code {
-      @apply rounded-[4px] bg-[#87837826] px-1 py-0.5 text-[0.85rem] text-[#EB5757];
+    p.is-editor-empty:first-child::before {
+      @apply pointer-events-none float-left h-0 text-gray-400;
+      content: attr(data-placeholder);
     }
 
     pre {
-      @apply my-6 rounded-[4px] bg-[#282c34] p-2 text-inherit;
-
-      code {
-        @apply bg-transparent p-0 text-[0.8rem] text-inherit;
-      }
-
-      .code-block {
-        position: relative;
-
-        select {
-          position: absolute;
-          background-color: var(--white);
-          background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="Black" d="M7 10l5 5 5-5z"/></svg>');
-          right: 0.5rem;
-          top: 0.5rem;
-        }
-      }
-
-      /* Code styling */
-      .hljs-comment,
-      .hljs-quote {
-        @apply text-gray-600;
-      }
-
-      .hljs-variable,
-      .hljs-template-variable,
-      .hljs-attribute,
-      .hljs-tag,
-      .hljs-name,
-      .hljs-regexp,
-      .hljs-link,
-      .hljs-selector-id,
-      .hljs-selector-class {
-        @apply text-red-400;
-      }
-
-      .hljs-number,
-      .hljs-meta,
-      .hljs-built_in,
-      .hljs-builtin-name,
-      .hljs-literal,
-      .hljs-type,
-      .hljs-params {
-        @apply text-orange-300;
-      }
-
-      .hljs-string,
-      .hljs-symbol,
-      .hljs-bullet {
-        @apply text-green-300;
-      }
-
-      .hljs-title,
-      .hljs-section {
-        @apply text-yellow-300;
-      }
-
-      .hljs-keyword,
-      .hljs-selector-tag {
-        @apply text-blue-300;
-      }
-
-      .hljs-emphasis {
-        @apply italic;
-      }
-
-      .hljs-strong {
-        @apply font-bold;
-      }
+      @apply my-6 rounded bg-[#282c34] p-2 text-inherit;
     }
+
+    pre code {
+      @apply bg-transparent p-0 text-sm text-inherit;
+    }
+
+    pre .code-block {
+      @apply relative;
+    }
+
+    pre .code-block select {
+      @apply absolute right-2 top-2 bg-white;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="Black" d="M7 10l5 5 5-5z"/></svg>');
+    }
+
+    /* Syntax highlighting */
+    .hljs-comment,
+    .hljs-quote {
+      @apply text-gray-600;
+    }
+    .hljs-variable,
+    .hljs-template-variable,
+    .hljs-attribute,
+    .hljs-tag,
+    .hljs-name,
+    .hljs-regexp,
+    .hljs-link,
+    .hljs-selector-id,
+    .hljs-selector-class {
+      @apply text-red-400;
+    }
+    .hljs-number,
+    .hljs-meta,
+    .hljs-built_in,
+    .hljs-builtin-name,
+    .hljs-literal,
+    .hljs-type,
+    .hljs-params {
+      @apply text-orange-300;
+    }
+    .hljs-string,
+    .hljs-symbol,
+    .hljs-bullet {
+      @apply text-green-300;
+    }
+    .hljs-title,
+    .hljs-section {
+      @apply text-yellow-300;
+    }
+    .hljs-keyword,
+    .hljs-selector-tag {
+      @apply text-blue-300;
+    }
+    .hljs-emphasis {
+      @apply italic;
+    }
+    .hljs-strong {
+      @apply font-bold;
+    }
+  }
+
+  .user-message pre {
+    @apply overflow-x-scroll rounded bg-[#282c34] p-2;
+  }
+
+  .user-message pre code {
+    @apply font-mono text-gray-400;
+    font-family: "Fira Code", "Fira Mono", Menlo, Consolas, "DejaVu Sans Mono", monospace;
+  }
+
+  p code {
+    @apply rounded bg-[#87837826] px-1 py-0.5 text-sm text-[#EB5757];
   }
 }
 

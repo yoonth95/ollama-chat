@@ -29,7 +29,7 @@
     --input-bg: 0 0% 12%;
     --text-primary: 0 0% 98%;
     --text-secondary: 0 0% 63.9%;
-    --placeholder: #adb5bd;
+    --placeholder: #525252;
     --code-block: #282c34;
     --inline-code: #eb5757;
     --hr: #3d251414;
@@ -62,20 +62,12 @@
     --input-bg: 0 0% 12%;
     --text-primary: 0 0% 98%;
     --text-secondary: 0 0% 63.9%;
-    --placeholder: #adb5bd;
+    --placeholder: #a3a3a3;
     --code-block-bg: #282c34;
     --inline-code-bg: #87837826;
     --inline-code: #eb5757;
     --hr: #444;
     --hr-select: #ffffff;
-  }
-  .tiptap {
-    @apply relative;
-
-    p.is-editor-empty:first-child::before {
-      @apply pointer-events-none float-left h-0 text-gray-400;
-      content: attr(data-placeholder);
-    }
   }
 }
 

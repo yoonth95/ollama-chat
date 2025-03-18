@@ -35,6 +35,7 @@ export default {
           DEFAULT: "hsl(var(--accent))", // 드롭다운 배경
           foreground: "hsl(var(--accent-foreground))",
         },
+        placeholder: "hsl(var(--placeholder))",
       },
       fontFamily: {
         pretendard: ["var(--font-pretendard)"],

@@ -5,10 +5,11 @@ import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 import Typography from "@tiptap/extension-typography";
 import Placeholder from "@tiptap/extension-placeholder";
 import Highlight from "@tiptap/extension-highlight";
+import HorizontalRule from "@tiptap/extension-horizontal-rule";
 import { Markdown } from "tiptap-markdown";
 import { all, createLowlight } from "lowlight";
 import CodeBlockComponent from "@/components/editor/CodeBlockComponent";
-import { ShiftEnterExtension } from "@/utils/tiptapExtensionUtil";
+import { CodeBlockEnhancementExtension, ShiftEnterExtension } from "@/utils/tiptapExtensionUtil";
 import "@/styles/editor.css";
 
 const lowlight = createLowlight(all);
@@ -30,20 +31,28 @@ const TiptapEditor = ({ placeholder = "메시지를 입력하세요.", onSubmit,
     extensions: [
       StarterKit.configure({
         codeBlock: false,
+        horizontalRule: false,
       }),
       CodeBlockLowlight.extend({
         addNodeView() {
           return ReactNodeViewRenderer(CodeBlockComponent);
         },
       }).configure({ lowlight }),
-      Placeholder.configure({
-        placeholder,
-        emptyEditorClass: "is-editor-empty",
-      }),
       Highlight,
       Typography,
       Markdown,
+      HorizontalRule,
       ShiftEnterExtension,
+      CodeBlockEnhancementExtension,
+      Placeholder.configure({
+        placeholder: ({ editor }) => {
+          const doc = editor.state.doc;
+          // 코드 블록이 있을 경우 placeholder 없애기
+          const hasCodeBlock = doc.content.content.some((node) => node.type.name === "codeBlock");
+          if (hasCodeBlock) return "";
+          return placeholder;
+        },
+      }),
     ],
     content: "",
     editorProps: {

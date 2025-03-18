@@ -88,7 +88,7 @@ const ChatInputContainer = ({ chatRoomId = "" }: { chatRoomId?: string }) => {
         <input type="hidden" name="model" />
         <TiptapEditor
           editorRef={editorRef}
-          placeholder="무엇이든 물어보세요"
+          placeholder="무엇이든 물어보세요."
           onSubmit={(markdown: string) => handleSubmit(undefined, markdown)}
         />
         <div className="flex w-full items-center justify-end px-3 py-3">

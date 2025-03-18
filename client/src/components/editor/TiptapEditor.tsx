@@ -10,7 +10,6 @@ import { Markdown } from "tiptap-markdown";
 import { all, createLowlight } from "lowlight";
 import CodeBlockComponent from "@/components/editor/CodeBlockComponent";
 import { CodeBlockEnhancementExtension, ShiftEnterExtension } from "@/utils/tiptapExtensionUtil";
-import "@/styles/editor.css";
 
 const lowlight = createLowlight(all);
 

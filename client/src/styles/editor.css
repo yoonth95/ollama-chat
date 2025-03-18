@@ -1,30 +1,129 @@
 .tiptap {
-  @apply [&>*:first-child]:mt-0;
+  position: relative;
+}
 
-  /* List styles */
-  @apply [&_ol]:my-5 [&_ol]:list-decimal [&_ol]:pl-4 [&_ol]:pr-4 [&_ul]:my-5 [&_ul]:list-disc [&_ul]:pl-4 [&_ul]:pr-4;
-  @apply [&_li_p]:mb-1 [&_li_p]:mt-1;
+.tiptap > *:first-child {
+  margin-top: 0;
+}
 
-  /* Heading styles */
-  @apply [&_h1]:mt-14 [&_h2]:mt-14 [&_h3]:mt-10 [&_h4]:mt-10 [&_h5]:mt-10 [&_h6]:mt-10;
-  @apply [&_h1]:mb-6 [&_h2]:mb-6;
-  @apply [&_h1]:text-[1.4rem] [&_h2]:text-[1.2rem] [&_h3]:text-[1.1rem] [&_h4]:text-[1rem] [&_h5]:text-[1rem] [&_h6]:text-[1rem];
-  @apply [&_h1]:leading-tight [&_h2]:leading-tight [&_h3]:leading-tight [&_h4]:leading-tight [&_h5]:leading-tight [&_h6]:leading-tight;
-  @apply [&_h1]:[text-wrap:pretty] [&_h2]:[text-wrap:pretty] [&_h3]:[text-wrap:pretty] [&_h4]:[text-wrap:pretty] [&_h5]:[text-wrap:pretty] [&_h6]:[text-wrap:pretty];
-  @apply [&_h1]:font-bold [&_h2]:font-bold [&_h3]:font-bold [&_h4]:font-bold [&_h5]:font-bold [&_h6]:font-bold;
+.tiptap p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  pointer-events: none;
+  float: left;
+  height: 0;
+  color: var(--placeholder);
+}
 
-  /* Code and preformatted text styles */
-  @apply [&_code]:rounded-md [&_code]:bg-[var(--inline-code-bg)] [&_code]:px-1 [&_code]:py-[0.25em] [&_code]:text-[0.85rem] [&_code]:text-[var(--inline-code)];
+/* List styles */
+.tiptap ol,
+.tiptap ul {
+  margin: 20px 0;
+  padding-left: 16px;
+  padding-right: 16px;
+}
 
-  @apply [&_pre]:my-6 [&_pre]:rounded-lg [&_pre]:bg-[var(--code-block-bg)] [&_pre]:px-3 [&_pre]:py-2 [&_pre]:font-['JetBrainsMono',monospace] [&_pre]:text-[var(--text-foreground)];
-  @apply [&_pre_code]:bg-transparent [&_pre_code]:p-0 [&_pre_code]:text-[0.8rem] [&_pre_code]:text-inherit;
+.tiptap ol {
+  list-style-type: decimal;
+}
 
-  /* Mark styles */
-  @apply [&_mark]:rounded-md [&_mark]:bg-[#FAF594] [&_mark]:box-decoration-clone [&_mark]:px-1 [&_mark]:py-[0.1rem];
+.tiptap ul {
+  list-style-type: disc;
+}
 
-  /* blockquote styles */
-  @apply [&_blockquote]:my-6 [&_blockquote]:border-l-4 [&_blockquote]:border-[#3d25141f] [&_blockquote]:pl-4;
+.tiptap li p {
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
 
-  /* HR styles */
-  @apply [&_hr.ProseMirror-selectednode]:border-[var(--hr-select)] [&_hr]:my-8 [&_hr]:border-0 [&_hr]:border-t [&_hr]:border-[var(--hr)];
+/* Heading styles */
+.tiptap h1,
+.tiptap h2 {
+  margin-top: 56px;
+  margin-bottom: 24px;
+}
+
+.tiptap h3,
+.tiptap h4,
+.tiptap h5,
+.tiptap h6 {
+  margin-top: 40px;
+}
+
+.tiptap h1 {
+  font-size: 1.4rem;
+}
+
+.tiptap h2 {
+  font-size: 1.2rem;
+}
+
+.tiptap h3 {
+  font-size: 1.1rem;
+}
+
+.tiptap h4,
+.tiptap h5,
+.tiptap h6 {
+  font-size: 1rem;
+}
+
+.tiptap h1,
+.tiptap h2,
+.tiptap h3,
+.tiptap h4,
+.tiptap h5,
+.tiptap h6 {
+  line-height: 1.2;
+  font-weight: bold;
+  text-wrap: pretty;
+}
+
+/* Code and preformatted text styles */
+.tiptap code {
+  background-color: var(--inline-code-bg);
+  padding: 0.25em 0.5em;
+  font-size: 0.85rem;
+  border-radius: 4px;
+  color: var(--inline-code);
+}
+
+.tiptap pre {
+  margin: 24px 0;
+  background-color: var(--code-block-bg);
+  padding: 8px 12px;
+  font-family: "JetBrainsMono", monospace;
+  font-size: var(--text-foreground);
+  border-radius: 8px;
+}
+
+.tiptap pre code {
+  background-color: transparent;
+  padding: 0;
+  font-size: 0.8rem;
+  color: inherit;
+}
+
+/* Mark styles */
+.tiptap mark {
+  background-color: #faf594;
+  padding: 0.1rem 0.25rem;
+  border-radius: 4px;
+}
+
+/* Blockquote styles */
+.tiptap blockquote {
+  margin: 24px 0;
+  padding-left: 16px;
+  border-left: 4px solid rgba(61, 37, 20, 0.12);
+}
+
+/* HR styles */
+.tiptap hr {
+  margin: 32px 0;
+  border: 0;
+  border-top: 1px solid var(--hr);
+}
+
+.tiptap hr.ProseMirror-selectednode {
+  border-color: var(--hr-select);
 }

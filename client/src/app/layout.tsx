@@ -4,6 +4,8 @@ import ThemeProvider from "@/providers/ThemeProvider";
 import ToastProvider from "@/providers/ToastProvider";
 import QueryProvider from "@/providers/QueryProvider";
 import "./globals.css";
+import "@/styles/editor.css";
+import "@/styles/markdown.css";
 
 export const metadata: Metadata = {
   title: "Create Next App",

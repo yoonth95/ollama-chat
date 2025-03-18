@@ -1,0 +1,177 @@
+.user-message,
+.bot-message {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-message > *:first-child,
+.bot-message > *:first-child {
+  margin-top: 0;
+}
+
+/* List styles */
+.user-message ol,
+.bot-message ol {
+  margin: 16px 0;
+  display: flex;
+  flex-direction: column;
+  list-style-type: decimal;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.user-message ul,
+.bot-message ul {
+  margin: 16px 0;
+  display: flex;
+  flex-direction: column;
+  list-style-type: disc;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.user-message li,
+.bot-message li {
+  margin: 4px 0;
+}
+
+/* Heading styles */
+.user-message h1,
+.bot-message h1 {
+  margin-bottom: 20px;
+  margin-top: 48px;
+  font-size: 2rem;
+  font-weight: bold;
+  line-height: 1.3;
+}
+
+.user-message h2,
+.bot-message h2 {
+  margin-bottom: 16px;
+  margin-top: 32px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  line-height: 1.3;
+}
+
+.user-message h3,
+.bot-message h3 {
+  margin-bottom: 8px;
+  margin-top: 16px;
+  font-size: 1.25rem;
+  font-weight: bold;
+  line-height: 1.3;
+}
+
+.user-message h4,
+.bot-message h4,
+.user-message h5,
+.bot-message h5,
+.user-message h6,
+.bot-message h6 {
+  margin-bottom: 8px;
+  margin-top: 16px;
+  font-size: 1rem;
+  font-weight: bold;
+  line-height: 1.3;
+}
+
+/* Mark styles */
+.user-message mark,
+.bot-message mark {
+  display: inline-block;
+  background-color: #faf594;
+  padding: 0.1rem 0.25rem;
+  border-radius: 4px;
+}
+
+/* Blockquote styles */
+.user-message blockquote,
+.bot-message blockquote {
+  margin: 20px 0;
+  padding-left: 16px;
+  border-left: 4px solid rgba(61, 37, 20, 0.12);
+}
+
+/* HR styles */
+.user-message hr,
+.bot-message hr {
+  margin: 24px 0;
+  border: 0;
+  border-top: 1px solid var(--hr);
+}
+
+/* Paragraph styles */
+.user-message p,
+.bot-message p {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* Inline Code styles */
+.user-message p code,
+.bot-message p code {
+  background-color: var(--inline-code-bg);
+  padding: 0.25em 0.5em;
+  font-size: var(--inline-code);
+  border-radius: 4px;
+}
+
+/* Code Block font-size styles */
+.user-message code,
+.bot-message code,
+.user-message pre,
+.bot-message pre {
+  font-size: 13px;
+}
+
+/* Code Block None Language styles */
+.user-message pre:has(.code-no-language),
+.bot-message pre:has(.code-no-language) {
+  white-space: pre;
+  word-break: normal;
+  background-color: rgb(30, 30, 30);
+  color: rgb(212, 212, 212);
+  overflow: auto;
+  hyphens: none;
+  padding: 16px;
+}
+
+.user-message pre:has(.code-no-language) code,
+.bot-message pre:has(.code-no-language) code {
+  background-color: transparent;
+  color: var(--muted-foreground);
+  white-space: pre;
+  word-break: normal;
+  text-align: left;
+  font-family: monospace;
+  letter-spacing: normal;
+  hyphens: none;
+  line-height: 1.5;
+}
+
+/* User-specific text sizes */
+.user-message li {
+  font-size: 14px;
+}
+
+.user-message p {
+  font-size: 15px;
+}
+
+.user-message p code {
+  font-size: 13px;
+}
+
+/* Bot-specific text sizes */
+.bot-message li {
+  font-size: 15px;
+}
+
+.bot-message p {
+  font-size: 16px;
+}
+
+.bot-message p code {
+  font-size: 14px;
+}

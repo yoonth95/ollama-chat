@@ -2,7 +2,7 @@
   @apply [&>*:first-child]:mt-0;
 
   /* List styles */
-  @apply [&_ol]:my-5 [&_ol]:pl-4 [&_ol]:pr-4 [&_ul]:my-5 [&_ul]:pl-4 [&_ul]:pr-4;
+  @apply [&_ol]:my-5 [&_ol]:list-decimal [&_ol]:pl-4 [&_ol]:pr-4 [&_ul]:my-5 [&_ul]:list-disc [&_ul]:pl-4 [&_ul]:pr-4;
   @apply [&_li_p]:mb-1 [&_li_p]:mt-1;
 
   /* Heading styles */
@@ -26,5 +26,5 @@
   @apply [&_blockquote]:my-6 [&_blockquote]:border-l-4 [&_blockquote]:border-[#3d25141f] [&_blockquote]:pl-4;
 
   /* HR styles */
-  @apply [&_hr]:my-8 [&_hr]:border-0 [&_hr]:border-t [&_hr]:border-[var(--hr)];
+  @apply [&_hr.ProseMirror-selectednode]:border-[var(--hr-select)] [&_hr]:my-8 [&_hr]:border-0 [&_hr]:border-t [&_hr]:border-[var(--hr)];
 }

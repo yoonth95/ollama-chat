@@ -9,7 +9,7 @@ const ChatMessages = async ({ chatRoomId }: { chatRoomId: string }) => {
   return (
     <section className="flex w-full flex-1 flex-col items-end justify-start overflow-y-auto">
       <UserChatBox content={message} />
-      <BotChatBox />
+      <BotChatBox content={message} />
     </section>
   );
 };

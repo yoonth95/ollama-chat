@@ -11,7 +11,7 @@ const SidebarContent = () => {
         <SidebarActionButton />
       </div>
       <ScrollArea className="flex-1">
-        <div className="h-[calc(100dvh-130px)] space-y-4 overflow-y-auto px-4">
+        <div className="h-[calc(100dvh-130px)] overflow-y-auto px-4">
           <ChatRoomList />
         </div>
       </ScrollArea>

@@ -1,5 +1,5 @@
-import ChatInputContainer from "@/components/chat/ChatInputContainer";
 import { Suspense } from "react";
+import { ChatInputContainer } from "@/components/chatBox";
 import ChatMessages from "./components/ChatMessages";
 
 export default async function Page({ params }: { params: Promise<{ chatRoomId: string }> }) {

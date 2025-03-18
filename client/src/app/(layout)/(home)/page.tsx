@@ -1,5 +1,5 @@
 import { ChatLayout } from "@/app/(layout)/(home)/components";
-import ChatInputContainer from "@/components/chat/ChatInputContainer";
+import { ChatInputContainer } from "@/components/chatBox";
 
 export default function HomePage() {
   return (

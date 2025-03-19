@@ -1,8 +1,10 @@
 import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
-import Sidebar from "@/components/layout/sidebar/Sidebar";
+import { cookies } from "next/headers";
 import Header from "@/components/layout/header/Header";
 import { getModels } from "@/components/layout/header/services";
+import AppSidebar from "@/components/layout/sidebar/AppSidebar";
 import { getChatRooms } from "@/components/layout/sidebar/services";
+import { SidebarProvider } from "@/components/ui/sidebar";
 
 export default async function MainLayout({
   children,
@@ -24,14 +26,19 @@ export default async function MainLayout({
     queryFn: getModels,
   });
 
+  const cookieStore = await cookies();
+  const defaultOpen = cookieStore.get("sidebar")?.value === "true";
+
   return (
     <div className="flex h-screen bg-background">
       <HydrationBoundary state={dehydrate(queryClient)}>
-        <Sidebar />
-        <div className="flex flex-1 flex-col">
-          <Header />
-          <main className="flex flex-1 flex-col items-center justify-center overflow-hidden">{children}</main>
-        </div>
+        <SidebarProvider defaultOpen={defaultOpen}>
+          <AppSidebar />
+          <div className="flex flex-1 flex-col">
+            <Header />
+            <main className="flex flex-1 flex-col items-center justify-center overflow-hidden">{children}</main>
+          </div>
+        </SidebarProvider>
       </HydrationBoundary>
     </div>
   );

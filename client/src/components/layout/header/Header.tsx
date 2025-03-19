@@ -6,9 +6,10 @@ import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { ErrorDisplay, SelectedModelDisplay, HeaderDropdownMenu } from "@/components/layout/header/models";
 import { SidebarActionButton } from "@/components/common";
-import { useSidebarStore } from "@/stores/useSidebarStore";
-import { useModelSelectStore } from "@/stores/useModelSelectStore";
 import { useGetModels } from "@/components/layout/header/hooks/useGetModels";
+import { useSidebar } from "@/components/ui/sidebar";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { useModelSelectStore } from "@/stores/useModelSelectStore";
 import { ChevronDown } from "lucide-react";
 
 const ThemeToggle = dynamic(() => import("@/components/common").then((mod) => mod.ThemeToggle), {
@@ -17,9 +18,9 @@ const ThemeToggle = dynamic(() => import("@/components/common").then((mod) => mo
 
 const Header = () => {
   const { selectedModel, setSelectedModel } = useModelSelectStore();
-  const isOpen = useSidebarStore((state) => state.isOpen);
-
   const { models, error } = useGetModels();
+  const { open } = useSidebar();
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     if (selectedModel && !models.some((m) => m.model === selectedModel.model)) {
@@ -30,7 +31,7 @@ const Header = () => {
   return (
     <header className="flex justify-between p-4">
       <div className="flex items-center gap-3">
-        {!isOpen && <SidebarActionButton />}
+        {isMobile || !open ? <SidebarActionButton /> : null}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button

@@ -2,14 +2,15 @@
 
 import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
-import { ChatRoom } from "@/components/layout/sidebar/models";
-import { useChatRooms, useGroupedChats } from "@/components/layout/sidebar/hooks";
+import { SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu } from "@/components/ui/sidebar";
+import { ChatRoomItem } from "@/components/layout/sidebar/models";
+import { useGetChatRooms, useGroupedChatRooms } from "@/components/layout/sidebar/hooks";
 import { LoaderCircle } from "lucide-react";
 
 const ChatRoomList = () => {
   const { ref, inView } = useInView();
-  const { data: chatRooms, fetchNextPage, hasNextPage, isFetchingNextPage } = useChatRooms();
-  const groupedChats = useGroupedChats(chatRooms);
+  const { data: chatRooms, fetchNextPage, hasNextPage, isFetchingNextPage } = useGetChatRooms();
+  const groupedChats = useGroupedChatRooms(chatRooms);
 
   useEffect(() => {
     if (inView && hasNextPage && !isFetchingNextPage) {
@@ -19,10 +20,18 @@ const ChatRoomList = () => {
 
   return (
     <>
-      <ChatRoom title="오늘" chats={groupedChats.today} />
-      <ChatRoom title="어제" chats={groupedChats.yesterday} />
-      <ChatRoom title="지난 7일" chats={groupedChats.lastWeek} />
-      <ChatRoom title="지난 30일" chats={groupedChats.older} />
+      {groupedChats.map((group) => (
+        <SidebarGroup key={group.title} className="group-data-[collapsible=icon]:hidden">
+          <SidebarGroupLabel>{group.title}</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {group.items.map((item) => (
+                <ChatRoomItem key={item.id} chat={item} />
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      ))}
       {(hasNextPage || isFetchingNextPage) && (
         <div ref={ref} className="flex justify-center text-sm text-muted-foreground">
           {isFetchingNextPage && <LoaderCircle className="h-4 w-4 animate-spin" />}

@@ -2,23 +2,15 @@
 
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { useSidebarStore } from "@/stores/useSidebarStore";
-import { PanelRightClose, SquarePen } from "lucide-react";
+import { SidebarTrigger } from "@/components/ui/sidebar";
+import { SquarePen } from "lucide-react";
 
 const SidebarActionButton = () => {
   const router = useRouter();
-  const toggleSidebar = useSidebarStore((state) => state.toggleSidebar);
 
   return (
     <div className="flex items-center justify-between gap-2">
-      <Button
-        variant="icon"
-        aria-label="on-off-sidebar"
-        className="h-8 w-8 text-secondary-foreground"
-        onClick={toggleSidebar}
-      >
-        <PanelRightClose className="!h-5 !w-5" />
-      </Button>
+      <SidebarTrigger className="h-8 w-8 text-secondary-foreground [&>svg]:!h-5 [&>svg]:!w-5" />
       <Button
         variant="icon"
         aria-label="new-post"

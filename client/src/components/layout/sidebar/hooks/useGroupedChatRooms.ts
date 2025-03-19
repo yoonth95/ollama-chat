@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { subDays, isToday, isYesterday, isAfter, parseISO } from "date-fns";
 import { ChatRoomType } from "@/types/chatRoomType";
 
-const useGroupedChats = (chatRooms: ChatRoomType[]) => {
+const useGroupedChatRooms = (chatRooms: ChatRoomType[]) => {
   return useMemo(() => {
     const today: ChatRoomType[] = [];
     const yesterday: ChatRoomType[] = [];
@@ -18,8 +18,21 @@ const useGroupedChats = (chatRooms: ChatRoomType[]) => {
       else older.push(chat);
     });
 
-    return { today, yesterday, lastWeek, older };
+    return [
+      { title: "오늘", items: today },
+      { title: "어제", items: yesterday },
+      { title: "지난 주", items: lastWeek },
+      { title: "이전 기록", items: older },
+    ]
+      .map((group) => ({
+        title: group.title,
+        items: group.items.map((chat) => ({
+          title: chat.title,
+          id: `/chat/${chat.id}`,
+        })),
+      }))
+      .filter((group) => group.items.length > 0); // 빈 그룹 제거
   }, [chatRooms]);
 };
 
-export default useGroupedChats;
+export default useGroupedChatRooms;

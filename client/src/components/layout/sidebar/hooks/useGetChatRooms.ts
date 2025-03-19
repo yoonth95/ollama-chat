@@ -1,7 +1,7 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getChatRooms } from "@/components/layout/sidebar/services";
 
-const useChatRooms = () => {
+const useGetChatRooms = () => {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
     queryKey: ["chatRooms"],
     queryFn: async ({ pageParam = 1 }) => {
@@ -24,4 +24,4 @@ const useChatRooms = () => {
   };
 };
 
-export default useChatRooms;
+export default useGetChatRooms;

@@ -1,4 +1,4 @@
-import useGroupedChats from "./useGroupedChats";
-import useChatRooms from "./useChatRooms";
+import useGroupedChatRooms from "./useGroupedChatRooms";
+import useGetChatRooms from "./useGetChatRooms";
 
-export { useChatRooms, useGroupedChats };
+export { useGetChatRooms, useGroupedChatRooms };
